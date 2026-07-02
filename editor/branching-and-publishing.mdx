@@ -1,7 +1,7 @@
 ---
-title: "Branching and Publishing in the Mintlify Editor"
+title: "Branching and Publishing in the Mintlify Web Editor"
 sidebarTitle: "Branching"
-description: "Learn how branches and protection rules determine what happens when you publish, and how to manage the full review and deployment workflow."
+description: "Understand how branches and protection rules determine what happens when you publish, and how to manage the full review and deployment workflow."
 ---
 
 The Mintlify web editor autosaves everything as you type, but your changes only go live when you choose to publish them. Understanding the relationship between branches, branch protection rules, and publishing helps you adopt the right workflow for your team — whether you prefer direct publishing or a pull request review process.
@@ -36,9 +36,13 @@ The actions available in the publish menu depend on **which branch you're on** a
 
 If there are no pending changes, the editor disables the publish and save actions. After Mintlify builds and deploys your changes, your live site updates in approximately 30 seconds to a few minutes. Check deployment status on your [dashboard](https://app.mintlify.com).
 
-## Create and switch branches
+## When to use a branch
 
-Use branches when you want to isolate changes from your live site until they're reviewed and approved. Edit directly on your deployment branch if you prefer a simpler workflow without pull request review.
+**Edit directly on your deployment branch** if you do not use a Git-based review workflow and want your changes to go live as soon as you publish.
+
+**Create a branch** when you want to isolate each change on a separate branch, use pull requests for review, or collaborate with teammates before anything reaches your live site.
+
+## Create and switch branches
 
 ### Create a branch
 
@@ -118,6 +122,15 @@ For GitHub repositories, reviewers can approve open pull requests without leavin
 
 Click any changed file in the publish menu to open it in diff view. In visual mode, you see a visual diff; in source mode, you see a text diff. Changed pages are highlighted in the file tree so you can see at a glance which files an automation or teammate modified.
 
+### Open an automation run in the editor
+
+When an automation opens a pull request, you can jump directly into the editor on the automation's branch to review and merge the changes:
+
+- From the **Automation Runs** page in your dashboard, click **Open in editor** on a completed run.
+- From a Slack notification for the run, click the **View changes** link.
+
+Either entry point opens the editor on the automation's branch with the changed pages preselected in the publish menu, so you can review the diff and merge or request changes without leaving the editor.
+
 ### Commit messages
 
 When you publish, you can enter a custom commit message before confirming. If you leave the field blank, the editor generates a default message listing the files you created, updated, moved, or deleted.
@@ -144,6 +157,6 @@ When the Mintlify agent edits a page through the API or MCP, it appears in the e
 
 When someone pushes changes to your repository from outside the editor, those changes appear in the editor automatically — no pull or page refresh required. Non-overlapping changes apply immediately. If a remote change and your local edit affect the same part of a page, the editor highlights the conflict so you can resolve it.
 
-<Note>
-  You can sign commits with your own GitHub account by authorizing it in your [account settings](https://app.mintlify.com/settings/account). Without authorization, the Mintlify GitHub App signs commits made in the web editor on your behalf.
-</Note>
+## Commit signing
+
+You can sign commits with your own GitHub account by authorizing it in your [account settings](https://app.mintlify.com/settings/account). Without authorization, the Mintlify GitHub App signs commits made in the web editor on your behalf.

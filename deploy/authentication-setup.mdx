@@ -1,5 +1,5 @@
 ---
-title: "Protect Your Docs with Authentication"
+title: "Set Up Authentication to Protect Your Documentation Site"
 sidebarTitle: "Authentication"
 description: "Control who can access your documentation by configuring password, OAuth 2.0, JWT, or Mintlify Auth to protect pages or your entire site."
 ---
@@ -375,5 +375,10 @@ Some Mintlify features behave differently or are unavailable when authentication
 |---|---|---|---|
 | llms.txt and llms-full.txt | Full support | Available behind authentication; AI tools may not be able to access the files | Publicly accessible, reflecting public pages only |
 | MCP server | Full support | Requires authentication to connect | Available without authentication for public pages; authentication required for protected pages |
+| Markdown export | Full support | Full support, respects user groups | Full support, respects user groups |
+| PDF export | Full support | Full support, respects user groups. Authenticated pages export with images and assets included. | Full support, respects user groups. Authenticated pages export with images and assets included. |
 | Search | Full support | Full support, respects user groups | Full support, respects user groups |
 | Assistant | Full support | Full support, respects user groups | Full support, respects user groups |
+| skill.md | Full support | Not supported | Not supported |
+| Sitemap | Full support | Available behind authentication, but excludes pages in groups | Available behind authentication, but excludes pages in groups |
+| robots.txt | Full support | Available behind authentication | Available behind authentication |

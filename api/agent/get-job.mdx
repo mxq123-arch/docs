@@ -1,7 +1,7 @@
 ---
-title: "GET /agent/jobs/{jobId} — Get Agent Job Status"
+title: "GET /agent/jobs/{jobId} — Retrieve Agent Job Status"
 sidebarTitle: "Get Job"
-description: "GET /agent/jobs/{jobId} — Retrieve the status, output, and pull request URL for a previously created agent job."
+description: "GET /agent/jobs/{jobId} — Retrieve the current status, output, and pull request URL for a previously created documentation agent job."
 ---
 
 Use this endpoint to check the progress of an agent job you started with [Create Job](/api/agent/create-job). Poll this endpoint after creating a job to determine when the agent has finished and to retrieve the URL of the pull request it opened. Once the job reaches `completed` status, the `prUrl` field contains the pull request link.

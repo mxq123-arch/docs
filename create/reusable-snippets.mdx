@@ -1,5 +1,5 @@
 ---
-title: "Create Reusable Content Snippets"
+title: "Reusable Content Snippets: Write Once, Use Anywhere"
 sidebarTitle: "Snippets"
 description: "Write content once and reuse it across multiple pages using Mintlify snippets — with support for variables, props, and React components in MDX."
 ---
@@ -131,7 +131,7 @@ Variables interpolate inside fenced code blocks, making snippets ideal for insta
 
 **Snippet file** (`/snippets/shared/install-snippet.mdx`):
 
-```mdx
+````mdx
 export const InstallSnippet = ({ packageName }) => <></>;
 
 Install the package:
@@ -139,7 +139,7 @@ Install the package:
 ```bash
 npm install {packageName}
 ```
-```
+````
 
 **Destination page**:
 
