@@ -1,0 +1,66 @@
+---
+title: "Customize the Mintlify Agent with AGENTS.md"
+sidebarTitle: "Customize"
+description: "Create an AGENTS.md file to give the agent persistent instructions about your style, coding standards, and project context so every PR matches your conventions."
+---
+
+You can customize how the agent behaves by creating an `AGENTS.md` file in your documentation repository. The agent appends these instructions to its system prompt on every run, so your preferences apply whether you use the agent from the dashboard, Slack, or the API — no need to repeat them in every prompt.
+
+## Where to place the file
+
+Place your `AGENTS.md` file inside the `.mintlify/` directory at the root of your documentation project:
+
+```
+.mintlify/AGENTS.md
+```
+
+`Agents.md` is also an accepted filename if you prefer mixed case.
+
+<Warning>
+  Do **not** place `AGENTS.md` at the root of your project. Files at the root are served publicly, which means anyone could read your custom instructions at `https://your-docs-domain.com/agents.md`. The `.mintlify/` directory is not served publicly, so your instructions stay private when placed there.
+</Warning>
+
+<Tip>
+  If you must store `AGENTS.md` at the project root or in another public directory, add it to your [`.mintignore`](/organize/mintignore) file to exclude it from your published documentation site.
+</Tip>
+
+## What to include in AGENTS.md
+
+Think of `AGENTS.md` as a standing briefing for the agent about your documentation project. Consider adding instructions for:
+
+- **Style preferences**: Voice, tone, formatting rules, and terminology specific to your product and brand.
+- **Code standards**: Which programming languages to use in examples, frameworks to prefer, and coding conventions to follow.
+- **Content requirements**: What sections or information to include for different page types (such as guides, API references, or quickstarts).
+- **Project context**: Specific details about your product, architecture, or user base that inform documentation decisions and help the agent write more accurately.
+
+## Example AGENTS.md file
+
+The following example shows a well-structured `AGENTS.md` for a developer-focused documentation site:
+
+```md
+# Documentation agent instructions
+
+## Code examples
+- Use TypeScript for all code examples. Our users are primarily TypeScript developers.
+- Always include error handling in API call examples.
+- Show both success and error response examples for all endpoints.
+- Include import statements at the top of code examples.
+
+## API documentation standards
+- Every endpoint must document: authentication requirements, rate limits, and common error codes.
+- Use real-world parameter values in examples (not foo/bar placeholders).
+- Include a complete request/response cycle for each endpoint.
+
+## Style and formatting
+- Write for developers with 2–5 years of experience. Don't oversimplify, but explain non-obvious concepts.
+- Use active voice and second person ("you").
+- Date format: ISO 8601 (YYYY-MM-DD).
+- When referencing UI elements, use bold: **Settings** button.
+
+## What to include
+- Add prerequisite sections to guides when users need API keys, environment setup, or dependencies.
+- Include "Next steps" sections linking to related documentation.
+- Add troubleshooting sections for common issues we see in support tickets.
+```
+
+The agent treats these instructions as constraints it should always respect. The more specific and concrete your instructions, the more consistently the agent will match your expectations across all tasks.

@@ -1,0 +1,132 @@
+---
+title: "Automate Documentation Maintenance with Automations"
+sidebarTitle: "Automations"
+description: "Create automations to run the Mintlify agent on a schedule or when a repository push occurs — keeping your docs accurate without any manual intervention."
+---
+
+Automations let you run the Mintlify agent automatically, without prompting it manually each time. Each automation defines a task for the agent and a trigger for when to run it. When the trigger fires, the agent follows its instructions and opens a pull request with any proposed changes — the same PR-based workflow you use for manual agent runs.
+
+## How automations work
+
+Every automation has two required components:
+
+- **A prompt**: The instructions the agent follows each time the automation runs. This works just like a prompt you'd send manually — the agent researches, plans, writes, validates, and opens a PR.
+- **A trigger**: The condition that causes the automation to run. Choose from a cron schedule (runs at a fixed time) or a push event (runs when code is pushed to a connected repository).
+
+<Note>
+  The agent opens pull requests for automation runs just as it does for manual requests. It never commits directly to your main branch, so your team always reviews changes before they go live.
+</Note>
+
+## Automation types
+
+Mintlify provides built-in automation types with pre-configured prompts optimized for common documentation tasks. You can also create custom automations with your own prompt.
+
+| Type | Description |
+|---|---|
+| `changelog` | Generates changelog entries based on recent pull requests and commits. |
+| `source-code-agent` | Reads source code from a connected repository and updates documentation to reflect changes. |
+| `translations` | Translates documentation pages into configured target languages. |
+| `writing-style` | Audits documentation for style consistency and proposes edits to match your style guide. |
+| `typo-check` | Scans for typos and grammatical errors and proposes corrections. |
+| `broken-link-detection` | Finds broken internal and external links and proposes fixes or removals. |
+| `seo-metadata-audit` | Reviews page metadata (titles, descriptions) for completeness and SEO best practices. |
+| `assistant-docs-updates` | Updates documentation based on questions users have asked the AI assistant. |
+| `contextual-feedback-docs-updates` | Updates documentation based on contextual feedback collected from readers. |
+| `custom` | Runs a fully custom prompt you define — use this for any task not covered by the built-in types. |
+
+## Create an automation
+
+<Tabs>
+  <Tab title="CLI">
+    Use `mint automations create` to create an automation from the terminal. You must be authenticated with `mint login` before running automation commands.
+
+    **Create with inline flags:**
+
+    ```shell
+    # Scheduled changelog automation (runs daily at 6 AM)
+    mint automations create \
+      --name "Daily changelog" \
+      --type changelog \
+      --cron "0 6 * * *"
+
+    # Push-triggered source-code automation with a context repo
+    mint automations create \
+      --name "Sync API reference" \
+      --type source-code-agent \
+      --push-repo my-org/api \
+      --context-repo my-org/shared-types \
+      --automerge
+    ```
+
+    **Create from a YAML file:**
+
+    ```shell
+    mint automations create --file automation.yaml
+    ```
+
+    The YAML file uses the same shape as the inline flags:
+
+    ```yaml
+    name: Translate content
+    type: translations
+    on:
+      cron: "0 6 * * *"
+    prompt: Prefer formal tone in French translations.
+    automerge: false
+    context:
+      - repo: my-org/shared-content
+    ```
+
+    **Key flags for `mint automations create`:**
+
+    | Flag | Description |
+    |---|---|
+    | `--name` | Automation name. Required unless using `--file`. |
+    | `--type` | Automation type from the table above. Omit for a custom automation. |
+    | `--prompt` | Additional instructions appended to the automation's base prompt on every run. |
+    | `--cron` | Cron expression for a scheduled trigger. Mutually exclusive with `--push-repo`. |
+    | `--push-repo` | Repository (`owner/repo`) for a push trigger. Repeatable for multiple repos. |
+    | `--context-repo` | Additional repo the agent reads during the run. Repeatable, up to 10 total. |
+    | `--automerge` | Automatically merge pull requests opened by this automation. |
+    | `--file` | Path to a JSON or YAML file containing the full automation definition. |
+  </Tab>
+  <Tab title="Dashboard">
+    Create and manage automations directly from the Mintlify dashboard without installing the CLI.
+
+    1. Go to the **Automations** section of your dashboard.
+    2. Click **New automation**.
+    3. Choose an automation type from the list, or select **Custom** to write your own prompt.
+    4. Give the automation a name that describes what it does.
+    5. Write or review the prompt the agent will follow on each run.
+    6. Set the trigger: choose **Schedule** and enter a cron expression, or choose **Push event** and select a connected repository.
+    7. Optionally add context repositories the agent should read during the run.
+    8. Toggle **Automerge** if you want the agent's PRs to merge automatically after checks pass.
+    9. Click **Create automation** to save and activate it.
+
+    The automation appears in your automations list with its next scheduled run or trigger configuration.
+  </Tab>
+</Tabs>
+
+## Manage automations
+
+**List automations:**
+
+```shell
+mint automations list
+```
+
+The output shows each automation's ID, name, type, trigger, and status. Add `--format json` for machine-readable output.
+
+**Delete an automation:**
+
+```shell
+mint automations delete <id>
+```
+
+Use the ID from `mint automations list`. Deleting an automation stops all future runs immediately.
+
+## Configure automerge
+
+Enable automerge on an automation to have the agent's pull requests merge automatically after all required checks pass. This is useful for low-risk automations like typo checks or translations where you trust the output and want a fully hands-off workflow.
+
+See [Configure automerge](/guides/configure-automerge) for the branch protection and repository settings required before enabling this option.

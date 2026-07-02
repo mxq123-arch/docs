@@ -1,0 +1,463 @@
+# Source: https://github.com/mintlify/docs/blob/main/cli/commands.mdx
+
+### Uh oh!
+
+There was an error while loading. [Please reload this page]().
+
+[mintlify](https://github.com/mintlify) / **[docs](https://github.com/mintlify/docs)** Public
+
+- [Notifications](https://github.com/login?return_to=%2Fmintlify%2Fdocs) You must be signed in to change notification settings
+- [Fork 236](https://github.com/login?return_to=%2Fmintlify%2Fdocs)
+- [Star 415](https://github.com/login?return_to=%2Fmintlify%2Fdocs)
+ 
+
+ 
+
+## FilesExpand file tree
+
+ main
+
+/
+
+# commands.mdx
+
+Copy path
+
+Blame
+
+More file actions
+
+Blame
+
+More file actions
+
+## Latest commit
+
+## History
+
+[History](https://github.com/mintlify/docs/commits/main/cli/commands.mdx)
+
+History
+
+398 lines (278 loc) · 13 KB
+
+ main
+
+/
+
+# commands.mdx
+
+Copy path
+
+Top
+
+## File metadata and controls
+
+- Preview
+ 
+- Code
+ 
+- Blame
+ 
+
+398 lines (278 loc) · 13 KB
+
+[Raw](https://github.com/mintlify/docs/raw/refs/heads/main/cli/commands.mdx)
+
+Copy raw file
+
+Download raw file
+
+Outline
+
+Edit and raw actions
+
+<table><tbody><tr><th>title</th><td>Commands</td></tr><tr><th>description</th><td>Complete reference for every Mintlify CLI command and flag, including mint dev, mint build, mint validate, mint broken-links, and more.</td></tr><tr><th>keywords</th><td><table><tbody><tr><th><div dir="auto">CLI</div></th><th><div dir="auto">mint</div></th><th><div dir="auto">commands</div></th><th><div dir="auto">flags</div></th><th><div dir="auto">reference</div></th></tr></tbody></table></td></tr><tr><th>boost</th><td>3</td></tr></tbody></table>
+
+## Global flags
+
+These flags are available on all commands.
+
+| Flag | Description |
+| --- | --- |
+| `--telemetry`, `-t` | Enable or disable anonymous usage telemetry. |
+| `--help`, `-h` | Display help for the command. |
+| `--version`, `-v` | Display the CLI version. Alias for `mint version`. |
+
+## `mint dev`
+
+Start a local preview of your documentation.
+
+```shell
+mint dev [flags]
+```
+
+| Flag | Description |
+| --- | --- |
+| `--port` | Port to run the local preview on. Defaults to `3000`. |
+| `--no-open` | Do not open the browser automatically. |
+| `--groups` | Comma-separated list of user groups to mock for preview. |
+| `--disable-openapi` | Skip OpenAPI file processing to improve performance. |
+| `--local-schema` | Allow locally hosted OpenAPI files served over HTTP. |
+
+---
+
+## `mint login`
+
+Authenticate with your Mintlify account.
+
+```shell
+mint login
+```
+
+Opens a browser window to complete authentication. If the browser does not open, the CLI displays a URL to open manually and a prompt to paste the authorization code. Credentials save in `~/.config/mintlify/config.json`.
+
+If you have more than one deployment, the CLI prompts you to select a default after you log in. You can change the default project later with `mint config set subdomain <subdomain>`.
+
+---
+
+## `mint logout`
+
+Remove stored credentials.
+
+```shell
+mint logout
+```
+
+---
+
+## `mint status`
+
+Display your current session details including CLI version, account email, organization, and configured subdomain.
+
+```shell
+mint status
+```
+
+---
+
+## `mint automations`
+
+Create, list, and delete [automations](https://github.com/mintlify/docs/blob/main/automations) from the terminal. Requires authentication with `mint login`.
+
+```shell
+mint automations <subcommand> [flags]
+```
+
+\`mint workflow\` and \`mint workflows\` continue to work as aliases for \`mint automations\`, so existing scripts keep running. New scripts should use \`mint automations\`.
+
+All subcommands accept these shared flags:
+
+| Flag | Description |
+| --- | --- |
+| `--subdomain` | Documentation subdomain. Defaults to the value set with `mint config set subdomain`, or the first project on your account. |
+| `--format` | Output format: `table` (default, pretty) or `json` (raw, machine-readable). |
+
+When `--format json` is set, errors print to stderr as `Error: <message>` and the command exits with a non-zero status, so you can pipe successful output into other tools.
+
+### `mint automations create`
+
+Create a new automation. You can pass the automation definition inline with flags, or point at a JSON or YAML file with `--file`.
+
+```shell
+mint automations create [flags]
+```
+
+| Flag | Description |
+| --- | --- |
+| `--name` | Automation name. Required unless `--file` is provided. |
+| `--prompt` | Instructions appended to the automation's base prompt on every run. |
+| `--type` | Automation type. One of `changelog`, `source-code-agent`, `translations`, `writing-style`, `typo-check`, `broken-link-detection`, `seo-metadata-audit`, `assistant-docs-updates`, or `contextual-feedback-docs-updates`. Omit for a custom automation. |
+| `--cron` | Cron expression for a scheduled trigger. Mutually exclusive with `--push-repo`. |
+| `--push-repo` | Repository (`owner/repo`) for a push trigger. Repeatable to listen to multiple repositories. Mutually exclusive with `--cron`. |
+| `--context-repo` | Additional context repository (`owner/repo`) the agent reads when the automation runs. Repeatable, up to 10 total. |
+| `--automerge` | Automatically merge pull requests opened by this automation. See [Configure automerge](https://github.com/mintlify/docs/blob/main/guides/configure-automerge) for setup requirements. |
+| `--file` | Path to a JSON or YAML file containing the full automation body. Overrides the inline flags. |
+
+Exactly one trigger is required: pass `--cron` for a scheduled automation or one or more `--push-repo` flags for a push-triggered automation.
+
+#### Examples
+
+```shell
+# Scheduled translations automation
+mint automations create \
+  --name "Translate content" \
+  --type translations \
+  --cron "0 6 * * *"
+
+# Push-triggered automation with extra context
+mint automations create \
+  --name "Sync API reference" \
+  --type source-code-agent \
+  --push-repo my-org/api \
+  --context-repo my-org/shared-types \
+  --automerge
+
+# Create from a file
+mint automations create --file automation.yaml
+```
+
+An automation file uses the same shape as the inline flags. The `on` field holds the trigger:
+
+```yaml
+name: Translate content
+type: translations
+on:
+  cron: "0 6 * * *"
+prompt: Prefer formal tone in French translations.
+automerge: false
+context:
+  - repo: my-org/shared-content
+```
+
+### `mint automations list`
+
+List automations for the current deployment.
+
+```shell
+mint automations list [flags]
+```
+
+The default table output shows each automation's ID, name, type, trigger, and status. Use `--format json` to get the full automation objects.
+
+### `mint automations delete`
+
+Delete an automation by ID. Use `mint automations list` to get the ID.
+
+```shell
+mint automations delete <id> [flags]
+```
+
+| Argument | Description |
+| --- | --- |
+| `id` | Automation schema ID to delete. |
+
+---
+
+## `mint config`
+
+Manage persistent default values for CLI commands. The configuration saves in `~/.config/mintlify/config.json`.
+
+```shell
+mint config <subcommand> <key> [value]
+```
+
+| Subcommand | Description |
+| --- | --- |
+| `set <key> <value>` | Set a configuration value. |
+| `get <key>` | Display a configuration value. |
+| `clear <key>` | Remove a configuration value. |
+
+### Configuration keys
+
+| Key | Description | Used by |
+| --- | --- | --- |
+| `subdomain` | Default documentation subdomain. | `mint automations` |
+
+---
+
+## `mint broken-links`
+
+Check for broken internal links in your documentation.
+
+```shell
+mint broken-links [flags]
+```
+
+The command excludes files matching [.mintignore](https://github.com/mintlify/docs/blob/main/organize/mintignore) patterns. Links that point to ignored files report as broken.
+
+| Flag | Description |
+| --- | --- |
+| `--check-anchors` | Also validate anchor links (for example, `/page#section`) against heading slugs. |
+| `--check-external` | Also check external URLs for broken links. |
+| `--check-redirects` | Also check that redirect destinations in `docs.json` resolve to valid paths. |
+| `--check-snippets` | Also check links inside `<Snippet>` components. |
+
+---
+
+## `mint a11y`
+
+Check for accessibility issues in your documentation.
+
+```shell
+mint a11y [flags]
+```
+
+Checks color contrast ratios and missing alt text on images and videos.
+
+| Flag | Description |
+| --- | --- |
+| `--skip-contrast` | Skip color contrast checks. |
+| `--skip-alt-text` | Skip missing alt text checks. |
+
+---
+
+## `mint validate`
+
+Validate your documentation build in strict mode. Exits with an error if there are any warnings or errors. Includes automatic validation of OpenAPI specifications referenced in your `docs.json`.
+
+```shell
+mint validate [flags]
+```
+
+| Flag | Description |
+| --- | --- |
+| `--groups` | Comma-separated list of user groups to mock for validation. |
+| `--disable-openapi` | Skip OpenAPI file processing and validation. |
+| `--local-schema` | Allow validation of locally hosted OpenAPI files served over HTTP. Only supports HTTPS in production. |
+
+The standalone \`mint openapi-check\` command is deprecated. Use \`mint validate\` instead.
+
+---
+
+## `mint export`
+
+Export your documentation as a self-contained zip archive for offline viewing and distribution.
+
+```shell
+mint export [flags]
+```
+
+| Flag | Description |
+| --- | --- |
+| `--output` | Output filename. Defaults to `export.zip`. |
+| `--groups` | Comma-separated list of user groups to include restricted pages for. |
+| `--disable-openapi` | Skip OpenAPI processing. |
+
+See [Offline export](https://github.com/mintlify/docs/blob/main/deploy/export) for details.
+
+---
+
+## `mint score`
+
+Run agent readiness checks against a public documentation site. Requires authentication with `mint login`.
+
+```shell
+mint score [url] [flags]
+```
+
+| Argument | Description |
+| --- | --- |
+| `url` | Optional. URL of the docs site to check. If omitted, the command scores your configured subdomain (from `mint config` or the subdomain associated with your logged-in account). |
+
+| Flag | Description |
+| --- | --- |
+| `--format` | Output format: `table` (default, colored), `plain` (pipeable TSV), or `json`. |
+
+The command displays an overall readiness score and a breakdown of individual checks with pass/fail indicators.
+
+### Examples
+
+```shell
+# Score your default subdomain
+mint score
+
+# Score a specific site
+mint score docs.example.com
+```
+
+### Checks
+
+The score evaluates the following areas:
+
+| Check | What it verifies |
+| --- | --- |
+| `llmsTxtExists` | Agents can reach an [llms.txt](https://github.com/mintlify/docs/blob/main/ai/llmstxt) file at the site root. |
+| `llmsTxtValid` | The `llms.txt` file follows the expected format with headings, blockquote summary, and Markdown links. |
+| `llmsTxtSize` | The `llms.txt` file is within the size threshold so agents can consume it without truncation. |
+| `llmsTxtLinksResolve` | Links inside `llms.txt` resolve to live pages. |
+| `llmsTxtLinksMarkdown` | Links inside `llms.txt` use Markdown syntax. |
+| `llmsTxtDirective` | The `llms.txt` file contains usage directives. |
+| `llmsTxtFullExists` | An [llms-full.txt](https://github.com/mintlify/docs/blob/main/ai/llmstxt/#llms-full-txt) file is available for agents that need the complete content. Runs independently of `llmsTxtExists`. |
+| `llmsTxtFullSize` | The `llms-full.txt` file is within a reasonable size for agents to process. |
+| `llmsTxtFullValid` | The `llms-full.txt` file contains valid content with headings. |
+| `llmsTxtFullLinksResolve` | Links inside `llms-full.txt` resolve to live pages. |
+| `skillMd` | Agents can reach a [skill.md](https://www.mintlify.com/docs/ai/skillmd) file for agent tool use. |
+| `contentNegotiationMarkdown` | The site returns Markdown when agents request it through content negotiation. |
+| `contentNegotiationPlaintext` | The site returns plain text when agents request it through content negotiation. |
+| `mcpServerDiscoverable` | Agents can discover an [MCP server](https://github.com/mintlify/docs/blob/main/ai/model-context-protocol) for tool-based agents. |
+| `mcpToolCount` | The MCP server exposes at least one tool. |
+| `openApiSpec` | There is an available OpenAPI or Swagger specification at a standard path. |
+| `robotsTxtAllowsAI` | The `robots.txt` file does not block AI crawlers. |
+| `sitemapExists` | There is a sitemap available for page discovery. |
+| `structuredData` | The homepage contains [JSON-LD](https://json-ld.org/) structured data (`<script type="application/ld+json">`). Reports the number of JSON-LD blocks and the schema types found. |
+| `responseLatency` | The site responds within an acceptable time for agents. |
+
+Some checks only run if a check they depend on passes. If a check fails, none of the checks that depend on it run. They automatically fail. For example, `llmsTxtValid` only passes if `llmsTxtExists` passes first.
+
+The overall score uses weighted scoring, so higher-impact checks contribute more to your score.
+
+---
+
+## `mint new`
+
+Create a new documentation project by picking a theme or cloning a pre-defined template from the [mintlify/templates](https://github.com/mintlify/templates) repository.
+
+```shell
+mint new [directory] [flags]
+```
+
+| Flag | Description |
+| --- | --- |
+| `--name` | Project name. The CLI prompts for this if not provided in interactive mode. |
+| `--theme` | Project [theme](https://github.com/mintlify/docs/blob/main/customize/themes). The CLI prompts for this if not provided in interactive mode. |
+| `--template` | Pre-defined template. The CLI prompts for this if not provided in interactive mode. |
+| `--force` | Overwrite the directory without prompting. |
+
+---
+
+## `mint update`
+
+Update the CLI to the latest version.
+
+```shell
+mint update
+```
+
+---
+
+## `mint version`
+
+Display the current CLI and client versions.
+
+```shell
+mint version
+```
+
+---
+
+## Coming soon
+
+These commands are available to run but are not yet functional. Running them records your interest through CLI telemetry and helps prioritize what ships next.
+
+| Command | Description |
+| --- | --- |
+| `mint ai` | AI-powered documentation tools. |
+| `mint test` | Documentation testing. |
+| `mint signup` | Account sign-up from the CLI. |
+| `mint mcp` | MCP server for documentation. |
+
+---
+
+## Telemetry
+
+The CLI collects anonymous usage telemetry to help improve Mintlify. Telemetry data includes the command name, CLI version, operating system, and architecture. Mintlify does **not** collect personally identifiable information, project content, or file paths.
+
+By default, the CLI collects telemetry data. You can opt out at any time using the `--telemetry` flag:
+
+```shell
+# Disable telemetry
+mint --telemetry false
+
+# Re-enable telemetry
+mint --telemetry true
+```
+
+You can also disable telemetry by setting one of these environment variables:
+
+| Variable | Value | Description |
+| --- | --- | --- |
+| `MINTLIFY_TELEMETRY_DISABLED` | `1` | Disable Mintlify CLI telemetry. |
+| `DO_NOT_TRACK` | `1` | Disable telemetry using the [Console Do Not Track](https://consoledonottrack.com/) standard. |
+
+Your preference saves in `~/.config/mintlify/config.json` and persists across CLI sessions.

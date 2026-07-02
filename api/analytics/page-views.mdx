@@ -1,0 +1,122 @@
+---
+title: "GET /analytics/page-views — Export Page View Data"
+sidebarTitle: "Page Views"
+description: "GET /analytics/page-views — Export page view and unique visitor data for your documentation. Filter by date range and aggregate by day or page."
+---
+
+Use this endpoint to export page view and unique visitor counts for your documentation site. Group results by day to analyze traffic trends over time, or group by page to identify your most and least visited content. Use this data to prioritize documentation improvements, measure the impact of content updates, and report on documentation engagement.
+
+## Authentication
+
+This endpoint requires an **Admin API key** (`mint_` prefix) passed as a Bearer token in the `Authorization` header.
+
+## Request
+
+**`GET https://api.mintlify.com/v1/analytics/page-views`**
+
+### Query Parameters
+
+<ParamField query="deploymentId" type="string" required>
+  The unique identifier for your Mintlify deployment. Page view data will be
+  scoped to this deployment.
+</ParamField>
+
+<ParamField query="startDate" type="string">
+  The start of the date range to filter results, in ISO 8601 format. For
+  example: `2024-01-01T00:00:00Z`. Defaults to 30 days ago if omitted.
+</ParamField>
+
+<ParamField query="endDate" type="string">
+  The end of the date range to filter results, in ISO 8601 format. For example:
+  `2024-01-31T23:59:59Z`. Defaults to the current date and time if omitted.
+</ParamField>
+
+<ParamField query="groupBy" type="string" default="page">
+  How to aggregate the results. Accepted values:
+
+  - `page` — Returns one record per page with total views and unique visitors
+    across the date range.
+  - `day` — Returns one record per day per page, allowing you to chart traffic
+    over time.
+</ParamField>
+
+## Response
+
+<ResponseField name="views" type="array">
+  An array of page view records aggregated according to the `groupBy` parameter.
+
+  <Expandable title="View object properties">
+    <ResponseField name="pageSlug" type="string">
+      The slug of the documentation page. For example: `api/introduction`.
+    </ResponseField>
+
+    <ResponseField name="views" type="integer">
+      The total number of page views recorded for this entry within the
+      specified date range.
+    </ResponseField>
+
+    <ResponseField name="uniqueVisitors" type="integer">
+      The number of unique visitors who viewed this page within the specified
+      date range.
+    </ResponseField>
+
+    <ResponseField name="date" type="string | null">
+      The date for this record in `YYYY-MM-DD` format. Only present when
+      `groupBy=day`. Returns `null` when `groupBy=page`.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+## Example
+
+<CodeGroup>
+
+```bash cURL — Group by Page
+curl "https://api.mintlify.com/v1/analytics/page-views?deploymentId=your-deployment-id&startDate=2024-01-01T00:00:00Z&groupBy=page" \
+  -H "Authorization: Bearer mint_yourAdminKeyHere"
+```
+
+```bash cURL — Group by Day
+curl "https://api.mintlify.com/v1/analytics/page-views?deploymentId=your-deployment-id&startDate=2024-01-01T00:00:00Z&groupBy=day" \
+  -H "Authorization: Bearer mint_yourAdminKeyHere"
+```
+
+```json Response — Group by Page
+{
+  "views": [
+    {
+      "pageSlug": "api/introduction",
+      "views": 4821,
+      "uniqueVisitors": 3104,
+      "date": null
+    },
+    {
+      "pageSlug": "quickstart",
+      "views": 3267,
+      "uniqueVisitors": 2589,
+      "date": null
+    }
+  ]
+}
+```
+
+```json Response — Group by Day
+{
+  "views": [
+    {
+      "pageSlug": "api/introduction",
+      "views": 156,
+      "uniqueVisitors": 112,
+      "date": "2024-01-15"
+    },
+    {
+      "pageSlug": "api/introduction",
+      "views": 203,
+      "uniqueVisitors": 178,
+      "date": "2024-01-16"
+    }
+  ]
+}
+```
+
+</CodeGroup>

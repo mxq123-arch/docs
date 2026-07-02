@@ -1,0 +1,83 @@
+---
+title: "Mintlify REST API Reference"
+sidebarTitle: "Introduction"
+description: "Use the Mintlify REST API to trigger deployments, embed an AI assistant, export analytics, and manage your documentation programmatically."
+---
+
+The Mintlify REST API gives you programmatic control over your documentation platform. Use it to trigger site rebuilds from your CI/CD pipeline, spin up preview deployments for branch reviews, run AI agent jobs that write and update docs automatically, embed the documentation assistant into your own products, and export analytics data for external analysis.
+
+## Common Use Cases
+
+- **Automated deployments** — Trigger site updates on a schedule or in response to events using [Trigger Update](/api/update/trigger) and [Get Status](/api/update/status).
+- **CI/CD integration** — Rebuild and deploy documentation as part of your existing deployment pipeline whenever code changes land.
+- **Preview deployments** — Create branch-scoped preview URLs programmatically so reviewers can inspect documentation changes before merging.
+- **Custom integrations** — Embed the AI assistant into your product, support portal, or internal tools using [Create Message](/api/assistant/create-message), [Search](/api/assistant/search), and [Get Page](/api/assistant/get-page).
+- **Automated editing** — Use agent jobs to write or revise documentation at scale with [Create Job](/api/agent/create-job), [Get Job](/api/agent/get-job), and [Send Message](/api/agent/send-message).
+- **Analytics export** — Pull feedback, search queries, and page view data into your own dashboards using the [Analytics](/api/analytics/feedback) endpoints.
+
+## Authentication
+
+Generate API keys on the [API keys page](https://app.mintlify.com/settings/organization/api-keys) in your dashboard. Each key belongs to your organization — you can use a single key across all deployments in that organization. You can create up to **10 API keys per hour** per organization.
+
+Mintlify issues two types of API keys, each scoped to a different set of endpoints:
+
+| Key type | Prefix | Use for |
+|---|---|---|
+| Admin API key | `mint_` | Updates, agent jobs, preview deployments, and analytics. Server-side only. |
+| Assistant API key | `mint_dsc_` | Assistant endpoints: create message, search, and get page content. Proxy in production. |
+
+### Admin API Key
+
+Use the admin API key to authenticate requests to the update, agent, preview, and analytics endpoints. Pass the key as a Bearer token in the `Authorization` header.
+
+<Warning>
+  The admin API key is a server-side secret. Never expose it in client-side
+  code, public repositories, or browser-accessible configuration files.
+</Warning>
+
+The admin API key covers these endpoints:
+
+- [Trigger Update](/api/update/trigger)
+- [Get Status](/api/update/status)
+- [Create Preview](/api/preview/create)
+- [Create Job](/api/agent/create-job)
+- [Get Job](/api/agent/get-job)
+- [Send Message](/api/agent/send-message)
+- [Get Feedback](/api/analytics/feedback)
+- [Get Search Queries](/api/analytics/search-queries)
+- [Get Page Views](/api/analytics/page-views)
+
+### Assistant API Key
+
+Use the assistant API key to authenticate requests to the assistant endpoints. Assistant keys begin with the `mint_dsc_` prefix.
+
+<Warning>
+  Do not embed the assistant API key directly in client-side code. Any visitor
+  who extracts the key can send requests on your behalf, consuming your
+  assistant credits and potentially triggering overage charges. In production,
+  proxy all assistant API requests through your own backend and store the key as
+  a server-side environment variable. A backend proxy also lets you add rate
+  limiting, authentication, and bot-protection to prevent abuse.
+</Warning>
+
+The assistant API key covers these endpoints:
+
+- [Create Message](/api/assistant/create-message)
+- [Search](/api/assistant/search)
+- [Get Page](/api/assistant/get-page)
+
+## Making Your First Request
+
+Authenticate every request by including your API key as a Bearer token in the `Authorization` header. The example below triggers a deployment update using an admin API key.
+
+<CodeGroup>
+
+```bash cURL
+curl https://api.mintlify.com/v1/update/trigger \
+  -X POST \
+  -H "Authorization: Bearer mint_yourAdminKeyHere" \
+  -H "Content-Type: application/json" \
+  -d '{"deploymentId": "your-deployment-id"}'
+```
+
+</CodeGroup>

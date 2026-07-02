@@ -1,0 +1,84 @@
+---
+title: "POST /agent/jobs — Create an Agent Job"
+sidebarTitle: "Create Job"
+description: "POST /agent/jobs — Start an agent job to write or update documentation. Accepts a prompt and opens a pull request with proposed changes."
+---
+
+Use this endpoint to start an agent job that automatically writes or updates documentation based on a plain-language prompt. The agent reads your existing docs, applies the requested changes, and opens a pull request in your connected Git repository. Use [Get Job](/api/agent/get-job) to poll the job status and retrieve the pull request URL once it is ready.
+
+## Authentication
+
+This endpoint requires an **Admin API key** (`mint_` prefix) passed as a Bearer token in the `Authorization` header.
+
+## Request
+
+**`POST https://api.mintlify.com/v1/agent/jobs`**
+
+### Body Parameters
+
+<ParamField body="deploymentId" type="string" required>
+  The unique identifier for your Mintlify deployment. Find this on the
+  deployment settings page in your dashboard.
+</ParamField>
+
+<ParamField body="prompt" type="string" required>
+  Plain-language instructions for the agent. Describe what you want written or
+  changed. For example: `"Add a quickstart guide for the Node.js SDK that covers
+  installation, authentication, and sending your first request."`
+</ParamField>
+
+<ParamField body="asDraft" type="boolean" default="false">
+  When `true`, the agent opens the pull request as a draft instead of a
+  ready-to-merge PR. Useful for automated workflows where a human needs to
+  review changes before they can be merged.
+</ParamField>
+
+## Response
+
+<ResponseField name="jobId" type="string">
+  A unique identifier for the agent job. Pass this to
+  [Get Job](/api/agent/get-job) to check the job status and retrieve the pull
+  request URL.
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  The initial status of the job. Typically `pending` immediately after creation.
+</ResponseField>
+
+<ResponseField name="prUrl" type="string | null">
+  The URL of the pull request opened by the agent. This is `null` until the job
+  reaches `completed` status.
+</ResponseField>
+
+## Example
+
+<CodeGroup>
+
+```bash cURL
+curl https://api.mintlify.com/v1/agent/jobs \
+  -X POST \
+  -H "Authorization: Bearer mint_yourAdminKeyHere" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "deploymentId": "your-deployment-id",
+    "prompt": "Add a quickstart guide for the Node.js SDK covering installation, authentication, and a first request.",
+    "asDraft": true
+  }'
+```
+
+```json Response
+{
+  "jobId": "job_01hx9k2m3n4p5q6r7s8t9u0v",
+  "status": "pending",
+  "prUrl": null
+}
+```
+
+</CodeGroup>
+
+<Note>
+  Set `asDraft: true` for automated workflows that run without human oversight.
+  Draft pull requests require a manual review and approval step before they can
+  be merged, giving your team a safety net when agent jobs run on a schedule or
+  in response to external events.
+</Note>

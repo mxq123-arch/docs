@@ -1,0 +1,185 @@
+---
+title: "Create Reusable Content Snippets"
+sidebarTitle: "Snippets"
+description: "Write content once and reuse it across multiple pages using Mintlify snippets — with support for variables, props, and React components in MDX."
+---
+
+One of the core principles of software development is DRY (Don't Repeat Yourself), and it applies equally to documentation. When the same content appears in multiple places — installation instructions, a legal disclaimer, a code sample — keeping those copies in sync is tedious and error-prone. Mintlify snippets let you write that content once, import it wherever you need it, and update it in a single file. Any page that imports a snippet picks up your changes automatically.
+
+<Note>
+Snippets are not currently supported in the web editor. To use snippets, edit your MDX files locally with the CLI or push snippet imports directly to your repository.
+</Note>
+
+## How snippets work
+
+A snippet is any `.mdx`, `.md`, or `.jsx` file that you import into another file. You can place snippet files anywhere in your project. When you import a snippet, the content only renders at the point of the import — snippets do not render as standalone pages.
+
+Any file placed in a `/snippets/` folder is always treated as a snippet, even if it is never imported into another file.
+
+Snippets can contain any content type that Mintlify supports, including components, code blocks, tables, and images. Snippets can also import other snippets.
+
+## Create a snippet
+
+Create a new `.mdx` file and add the content you want to reuse. For example, create `/snippets/shared/install-note.mdx`:
+
+```mdx
+Install the latest version before proceeding. Older versions may not support all features described in this guide.
+```
+
+## Import snippets into pages
+
+Import snippets using either an absolute or a relative path:
+
+- **Absolute imports** — start with `/` to import from the root of your project.
+- **Relative imports** — start with `./` or `../` to import relative to the current file's location.
+
+Relative imports enable IDE navigation: press <kbd>Cmd</kbd> and click a snippet name in your editor to jump directly to its definition.
+
+<Steps>
+
+### Import text
+
+Add content to your snippet file, then import and render it on any page.
+
+**Snippet file** (`/snippets/shared/my-snippet.mdx`):
+
+```mdx
+Hello world! This is the content I want to reuse across pages.
+```
+
+**Destination page** (absolute import):
+
+```mdx
+---
+title: "An example page"
+description: "This is an example page that imports a snippet."
+---
+
+import MySnippet from "/snippets/shared/my-snippet.mdx";
+
+The snippet content displays beneath this sentence.
+
+<MySnippet />
+```
+
+**Destination page** (relative import):
+
+```mdx
+---
+title: "An example page"
+description: "This is an example page that imports a snippet."
+---
+
+import MySnippet from "../snippets/shared/my-snippet.mdx";
+
+The snippet content displays beneath this sentence.
+
+<MySnippet />
+```
+
+### Import variables
+
+Export named constants from a snippet file, then import and reference them in a page.
+
+**Snippet file** (`/snippets/shared/custom-variables.mdx`):
+
+```mdx
+export const myName = "Ronan";
+
+export const myObject = { fruit: "strawberries" };
+```
+
+**Destination page**:
+
+```mdx
+---
+title: "An example page"
+description: "This is an example page that imports a snippet with variables."
+---
+
+import { myName, myObject } from "/snippets/shared/custom-variables.mdx";
+
+Hello, my name is {myName} and I like {myObject.fruit}.
+```
+
+### Import snippets with variables
+
+Pass props to a snippet when you import it to customize the rendered output. The prop value replaces the variable placeholder wherever it appears in the snippet body — including inside fenced code blocks.
+
+**Snippet file** (`/snippets/shared/my-snippet.mdx`):
+
+```mdx
+My keyword of the day is {word}.
+```
+
+**Destination page**:
+
+```mdx
+---
+title: "An example page"
+description: "This is an example page that imports a snippet with a variable."
+---
+
+import MySnippet from "/snippets/shared/my-snippet.mdx";
+
+<MySnippet word="bananas" />
+```
+
+#### Example: installation snippet with a variable
+
+Variables interpolate inside fenced code blocks, making snippets ideal for installation commands that differ by package name:
+
+**Snippet file** (`/snippets/shared/install-snippet.mdx`):
+
+```mdx
+export const InstallSnippet = ({ packageName }) => <></>;
+
+Install the package:
+
+```bash
+npm install {packageName}
+```
+```
+
+**Destination page**:
+
+```mdx
+import InstallSnippet from "/snippets/shared/install-snippet.mdx";
+
+<InstallSnippet packageName="@myorg/sdk" />
+```
+
+### Import React components
+
+Create a JSX snippet that exports a React component, then import and render it on any page.
+
+**Snippet file** (`/snippets/components/my-jsx-snippet.jsx`):
+
+```jsx
+export const MyJSXSnippet = () => {
+  return (
+    <div>
+      <h1>Hello, world!</h1>
+    </div>
+  );
+};
+```
+
+<Warning>
+Use arrow function syntax (`=>`) rather than `function` declarations when defining components in snippets. The `function` keyword is not supported in snippet files.
+</Warning>
+
+**Destination page**:
+
+```mdx
+---
+title: "An example page"
+description: "This is an example page that imports a snippet with a React component."
+---
+
+import { MyJSXSnippet } from "/snippets/components/my-jsx-snippet.jsx";
+
+<MyJSXSnippet />
+```
+
+</Steps>

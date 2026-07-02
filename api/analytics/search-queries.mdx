@@ -1,0 +1,101 @@
+---
+title: "GET /analytics/search — Export Search Query Data"
+sidebarTitle: "Search Queries"
+description: "GET /analytics/search — Export search query data from your documentation site including query text, result counts, and click-through data."
+---
+
+Use this endpoint to export the search queries your readers have entered on your documentation site. The response includes each unique query string, how many times it was searched, and the average number of results returned. Use this data to identify content gaps, spot popular topics, and improve your documentation coverage.
+
+## Authentication
+
+This endpoint requires an **Admin API key** (`mint_` prefix) passed as a Bearer token in the `Authorization` header.
+
+## Request
+
+**`GET https://api.mintlify.com/v1/analytics/search`**
+
+### Query Parameters
+
+<ParamField query="deploymentId" type="string" required>
+  The unique identifier for your Mintlify deployment. Search query data will be
+  scoped to this deployment.
+</ParamField>
+
+<ParamField query="startDate" type="string">
+  The start of the date range to filter results, in ISO 8601 format. For
+  example: `2024-01-01T00:00:00Z`. Defaults to 30 days ago if omitted.
+</ParamField>
+
+<ParamField query="endDate" type="string">
+  The end of the date range to filter results, in ISO 8601 format. For example:
+  `2024-01-31T23:59:59Z`. Defaults to the current date and time if omitted.
+</ParamField>
+
+<ParamField query="limit" type="integer" default="100">
+  The maximum number of query records to return. Defaults to `100`. Results are
+  sorted by `count` descending so the most frequently searched terms appear
+  first.
+</ParamField>
+
+## Response
+
+<ResponseField name="queries" type="array">
+  An array of search query records matching the specified filters.
+
+  <Expandable title="Query object properties">
+    <ResponseField name="query" type="string">
+      The search query string entered by the user.
+    </ResponseField>
+
+    <ResponseField name="count" type="integer">
+      The number of times this query was searched within the specified date
+      range.
+    </ResponseField>
+
+    <ResponseField name="avgResults" type="number">
+      The average number of search results returned for this query. A value of
+      `0` indicates searches that returned no results.
+    </ResponseField>
+
+    <ResponseField name="createdAt" type="string">
+      The ISO 8601 timestamp of the most recent search for this query within the
+      date range.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+## Example
+
+<CodeGroup>
+
+```bash cURL
+curl "https://api.mintlify.com/v1/analytics/search?deploymentId=your-deployment-id&startDate=2024-01-01T00:00:00Z&limit=50" \
+  -H "Authorization: Bearer mint_yourAdminKeyHere"
+```
+
+```json Response
+{
+  "queries": [
+    {
+      "query": "authentication",
+      "count": 342,
+      "avgResults": 8.4,
+      "createdAt": "2024-01-30T16:44:02Z"
+    },
+    {
+      "query": "custom domain",
+      "count": 198,
+      "avgResults": 3.1,
+      "createdAt": "2024-01-29T09:12:55Z"
+    },
+    {
+      "query": "dark mode",
+      "count": 47,
+      "avgResults": 0,
+      "createdAt": "2024-01-27T11:30:18Z"
+    }
+  ]
+}
+```
+
+</CodeGroup>

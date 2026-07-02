@@ -1,0 +1,149 @@
+---
+title: "Branching and Publishing in the Mintlify Editor"
+sidebarTitle: "Branching"
+description: "Learn how branches and protection rules determine what happens when you publish, and how to manage the full review and deployment workflow."
+---
+
+The Mintlify web editor autosaves everything as you type, but your changes only go live when you choose to publish them. Understanding the relationship between branches, branch protection rules, and publishing helps you adopt the right workflow for your team — whether you prefer direct publishing or a pull request review process.
+
+## Saving versus publishing
+
+**Saving** happens automatically. The editor stores your edits on its servers and persists them across browser tabs, devices, and network interruptions. You never lose work between sessions.
+
+**Publishing** commits your changes to your Git repository. Click **Publish** in the toolbar to open the publish menu, review your pending changes, and commit them. The editor tracks the following as pending changes:
+
+- Content edits in pages
+- New or deleted pages
+- Navigation structure changes
+- Media uploads
+- Configuration updates
+
+## What happens when you publish
+
+The actions available in the publish menu depend on **which branch you're on** and **whether that branch has protection rules requiring pull requests**.
+
+| Branch type | Branch protection | Available actions |
+|---|---|---|
+| Deployment branch | None | **Publish** directly to your live site |
+| Deployment branch | Pull requests required | **Create branch** to move changes to a new branch |
+| Feature branch | None | **Save in branch**, **Create pull request** |
+| Feature branch | Pull requests required | **Save in branch**, **Create pull request** |
+
+- **Publish** — Commits and deploys your changes to your live site immediately.
+- **Save in branch** — Commits changes to a feature branch without merging to your deployment branch.
+- **Create branch** — Moves your pending changes to a new feature branch when you're on a protected deployment branch.
+- **Create pull request** — Opens a pull request targeting your deployment branch.
+
+If there are no pending changes, the editor disables the publish and save actions. After Mintlify builds and deploys your changes, your live site updates in approximately 30 seconds to a few minutes. Check deployment status on your [dashboard](https://app.mintlify.com).
+
+## Create and switch branches
+
+Use branches when you want to isolate changes from your live site until they're reviewed and approved. Edit directly on your deployment branch if you prefer a simpler workflow without pull request review.
+
+### Create a branch
+
+<Steps>
+  <Step title="Open the branch picker">
+    Click the branch name in the editor toolbar.
+  </Step>
+  <Step title="Start a new branch">
+    Click **Create new branch**.
+  </Step>
+  <Step title="Handle pending changes">
+    If you have pending changes, choose whether to bring them to the new branch or leave them on the current branch.
+  </Step>
+  <Step title="Name and create">
+    Enter a descriptive name that identifies the purpose of the branch, then click **Create branch**.
+  </Step>
+</Steps>
+
+### Switch branches
+
+1. Click the branch name in the toolbar.
+2. Search for or scroll to the branch you want.
+3. Click the branch name to switch to it.
+
+If you have unpublished changes when switching, the editor prompts you to bring those changes to the new branch or leave them on the original. To copy a branch name, hover over it in the dropdown and click the copy icon — useful when sharing with teammates or referencing it in a pull request.
+
+## Preview your changes
+
+Every time you save changes to a feature branch, Mintlify builds a preview deployment — a temporary URL where your changes render exactly as they would on your live site.
+
+### Access and share a preview
+
+1. Click **Publish** in the editor toolbar to open the publish menu.
+2. Click the preview URL shown in the menu. The URL format is `organization-branch-name.mintlify.site`.
+
+Copy and send the URL to reviewers. The preview updates automatically each time you save to the branch.
+
+### Restrict preview access
+
+Preview URLs are publicly accessible by default. To restrict access to members of your Mintlify organization only, enable preview authentication on the [Add-ons](https://app.mintlify.com/products/addons) page of your dashboard.
+
+### Share editor links
+
+To invite a teammate directly to a specific page on a branch, copy the URL from your browser's address bar and share it. Anyone with access to your Mintlify organization can open the link directly in their own editor session.
+
+The editor URL format is:
+
+```text
+https://app.mintlify.com/{org}/{project}/editor/{branch}/~/{filepath}
+```
+
+For example: `https://app.mintlify.com/acme/docs/editor/main/~/guides/quickstart.mdx`
+
+## Review and merge pull requests
+
+When a pull request is open for the current branch, the publish menu displays a review panel showing:
+
+- The pull request title, description, and draft status
+- The source and target branches
+- The number of changed files
+- The approval requirement on the deployment branch: **Approval required**, **Code owner required**, or no requirement
+- The current review status: **Approved**, **Changes requested**, or **Awaiting review**
+
+Click **Open in GitHub** or **Open in GitLab** to view and manage the pull request in your Git provider.
+
+Once a reviewer approves the pull request, click **Merge and publish** to merge and deploy directly from the editor. The editor switches back to your deployment branch after merging.
+
+### Approve pull requests from the editor
+
+For GitHub repositories, reviewers can approve open pull requests without leaving the editor. When a pull request is open, an **Approve pull request** button appears in the review panel if your account has permission to review it.
+
+<Note>
+  The **Approve pull request** button is not available for draft pull requests, pull requests you have already approved, or GitLab merge requests. Click **Open in GitLab** to approve a merge request in GitLab.
+</Note>
+
+### Review changes before merging
+
+Click any changed file in the publish menu to open it in diff view. In visual mode, you see a visual diff; in source mode, you see a text diff. Changed pages are highlighted in the file tree so you can see at a glance which files an automation or teammate modified.
+
+### Commit messages
+
+When you publish, you can enter a custom commit message before confirming. If you leave the field blank, the editor generates a default message listing the files you created, updated, moved, or deleted.
+
+### Simultaneous publishing
+
+Only one publish can happen at a time per branch. If a teammate publishes to the same branch while you're also attempting to publish, wait for the current publish to complete before trying again.
+
+## Resolve conflicts
+
+Conflicts occur when your branch and the deployment branch have incompatible changes to the same files — for example, when you and a teammate edited the same lines or moved a file to different locations. The editor displays a warning when conflicts block publishing. Follow the on-screen prompts to choose which version of each conflicting section to keep.
+
+## Collaborate in real time
+
+When multiple people open the same page on the same branch, they edit together in real time. Each person's cursor and edits are visible to everyone else, with collaborator avatars shown in the toolbar.
+
+- Changes from all collaborators merge automatically — two people editing the same section won't create a conflict.
+- Undo only affects your own edits, not your collaborators'.
+- If you lose your connection, edits save locally and sync when you reconnect.
+
+When the Mintlify agent edits a page through the API or MCP, it appears in the editor as any other collaborator. You see the agent's avatar in the toolbar and a live cursor at its most recent edit location. The cursor clears automatically when the agent finishes.
+
+## Git sync
+
+When someone pushes changes to your repository from outside the editor, those changes appear in the editor automatically — no pull or page refresh required. Non-overlapping changes apply immediately. If a remote change and your local edit affect the same part of a page, the editor highlights the conflict so you can resolve it.
+
+<Note>
+  You can sign commits with your own GitHub account by authorizing it in your [account settings](https://app.mintlify.com/settings/account). Without authorization, the Mintlify GitHub App signs commits made in the web editor on your behalf.
+</Note>

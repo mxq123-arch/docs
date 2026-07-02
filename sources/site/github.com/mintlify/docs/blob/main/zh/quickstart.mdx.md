@@ -1,0 +1,225 @@
+# Source: https://github.com/mintlify/docs/blob/main/zh/quickstart.mdx
+
+### Uh oh!
+
+There was an error while loading. [Please reload this page]().
+
+[mintlify](https://github.com/mintlify) / **[docs](https://github.com/mintlify/docs)** Public
+
+- [Notifications](https://github.com/login?return_to=%2Fmintlify%2Fdocs) You must be signed in to change notification settings
+- [Fork 236](https://github.com/login?return_to=%2Fmintlify%2Fdocs)
+- [Star 415](https://github.com/login?return_to=%2Fmintlify%2Fdocs)
+ 
+
+ 
+
+## FilesExpand file tree
+
+ main
+
+/
+
+# quickstart.mdx
+
+Copy path
+
+Blame
+
+More file actions
+
+Blame
+
+More file actions
+
+## Latest commit
+
+![mintlify[bot]](https://avatars.githubusercontent.com/in/222410?v=4&size=40)![ethanpalm](https://avatars.githubusercontent.com/u/56270045?v=4&size=40)![claude](https://avatars.githubusercontent.com/u/81847?v=4&size=40)
+
+3 people
+
+[Update from code changes: switch hosted docs domain to mintlify.site (](https://github.com/mintlify/docs/commit/3ca550b188eb71db76cf352efd816131e1fbad45) [#…](https://github.com/mintlify/docs/pull/6296)
+
+Open commit detailssuccess
+
+Jun 26, 2026
+
+[3ca550b](https://github.com/mintlify/docs/commit/3ca550b188eb71db76cf352efd816131e1fbad45) · Jun 26, 2026
+
+## History
+
+[History](https://github.com/mintlify/docs/commits/main/zh/quickstart.mdx)
+
+Open commit details
+
+History
+
+180 lines (133 loc) · 7.24 KB
+
+## FilesExpand file tree
+
+ main
+
+/
+
+# quickstart.mdx
+
+Copy path
+
+Top
+
+## File metadata and controls
+
+- Preview
+ 
+- Code
+ 
+- Blame
+ 
+
+180 lines (133 loc) · 7.24 KB
+
+[Raw](https://github.com/mintlify/docs/raw/refs/heads/main/zh/quickstart.mdx)
+
+Copy raw file
+
+Download raw file
+
+Edit and raw actions
+
+<table><tbody><tr><th>title</th><td>快速入门</td></tr><tr><th>description</th><td>使用 Mintlify，在几分钟内部署文档站点，并通过网页编辑器或 Git 完成首次内容修改。</td></tr><tr><th>keywords</th><td><table><tbody><tr><th><div dir="auto">快速入门</div></th><th><div dir="auto">部署</div></th><th><div dir="auto">入门</div></th><th><div dir="auto">第一步</div></th><th><div dir="auto">教程</div></th><th><div dir="auto">设置</div></th><th><div dir="auto">上手</div></th></tr></tbody></table></td></tr><tr><th>boost</th><td>3</td></tr></tbody></table>
+
+完成本指南后，你将拥有一个已上线的文档站点，可以开始对其进行自定义和更新。
+
+\## 开始之前
+
+Mintlify 使用“文档即代码” (docs-as-code) 的方法来管理你的文档。站点上的每个页面都有一个对应的文件，存储在你的文档存储库中。
+
+当你将文档存储库连接到你的项目后，你可以在本地或 Web 编辑器中编辑文档，并将任何更改同步到远程存储库。
+
+使用 AI 编码工具？复制下面的提示词，以添加 Mintlify \[skill\](/zh/ai/skillmd) 和 Mintlify Model Context Protocol (MCP) 服务器 (\[MCP 服务器\](/zh/ai/model-context-protocol)) ，在更新文档时获得更好的效果。
+
+<Prompt description="安装 Mintlify skill，以获取 Mintlify 项目结构、组件和文档最佳实践的上下文信息：
+
+npx skills add [https://mintlify.com/docs](https://mintlify.com/docs)
+
+然后添加 Mintlify Model Context Protocol（MCP）服务器，以便访问文档搜索功能。按照 [https://www.mintlify.com/docs/ai/model-context-protocol.md](https://www.mintlify.com/docs/ai/model-context-protocol.md) 上的安装说明进行设置。" actions={\["copy", "cursor"\]}
+
+安装 Mintlify skill，以获取 Mintlify 项目结构、组件和文档最佳实践的上下文信息：
+
+npx skills add [https://mintlify.com/docs](https://mintlify.com/docs)
+
+然后添加 Mintlify MCP 服务器，以便访问文档搜索功能。按照 [https://www.mintlify.com/docs/ai/model-context-protocol.md](https://www.mintlify.com/docs/ai/model-context-protocol.md) 上的安装说明进行设置。
+
+\## 部署你的文档站点
+
+前往 [mintlify.com/start](https://mintlify.com/start) 并完成初始设置流程。在初始设置过程中，你会连接你的 GitHub 账户，为文档创建或选择一个存储库，并安装 GitHub 应用以启用自动部署。
+
+完成初始设置后，你的文档站点会部署完成，并可通过你的 `.mintlify.site` URL 访问。
+
+如果你想在不连接自己的存储库的情况下快速开始使用，可以在初始设置过程中跳过 Git 提供商连接。Mintlify 会在一个私有组织下为你创建一个私有存储库，并自动为你配置 GitHub 应用。
+
+```
+这样你可以立即使用 Web 编辑器。如果你之后想使用自己的存储库，请前往控制台中的 [Git Settings](https://dashboard.mintlify.com/settings/deployment/git-settings)，通过 Git 设置向导迁移你的内容。详情请参阅[克隆到你自己的存储库](/zh/deploy/github#clone-to-your-own-repository)。
+```
+
+\## 查看你已部署的网站
+
+你的文档站点现在已部署在 `https://<your-project-name>.mintlify.site`。
+
+在 [控制台](https://dashboard.mintlify.com/) 的 **Overview** 页面中可以找到准确的 URL。
+
+[![Mintlify 控制台 Overview 页面。](https://github.com/mintlify/docs/raw/main/images/quickstart/mintlify-domain-light.png)](https://github.com/mintlify/docs/blob/main/images/quickstart/mintlify-domain-light.png)
+
+[![Mintlify 控制台 Overview 页面。](https://github.com/mintlify/docs/raw/main/images/quickstart/mintlify-domain-dark.png)](https://github.com/mintlify/docs/blob/main/images/quickstart/mintlify-domain-dark.png)
+
+你的网站已经可以立即访问。使用这个 URL 进行测试并与团队分享。在面向正式用户分享之前，你可能希望先添加一个\[自定义域名\](/zh/customize/custom-domain)。
+
+\## 完成你的第一次修改
+
+命令行界面 (CLI) 需要 \[Node.js\]([https://nodejs.org/en](https://nodejs.org/en)) v20.17.0 或更高版本。为保证稳定性，建议使用 LTS 版本。
+
+```
+    <CodeGroup>
+      ```bash npm
+ npm i -g mint
+ ```
+
+      ```bash pnpm
+ pnpm add -g mint
+ ```
+    </CodeGroup>
+
+    完整的安装步骤和故障排查请参见 [Install the CLI](/zh/cli/install)。
+  </Step>
+
+  <Step title="克隆你的存储库">
+    如果你还没有在本地克隆仓库，请使用 Git 克隆：
+
+    ```bash
+ git clone <your-repository-url>
+ ```
+
+    如果你的仓库位于 Mintlify 的私有组织中，请参阅 [克隆到你自己的仓库](/zh/deploy/github#clone-to-your-own-repository)，先将其移动到你自己的账户中。
+  </Step>
+
+  <Step title="编辑页面">
+    在你常用的编辑器中打开 `index.mdx`，在 frontmatter 中更新 description 字段：
+
+    ```mdx
+ ---
+ title: "Introduction"
+ description: "Your custom description here"
+ ---
+ ```
+  </Step>
+
+  <Step title="本地预览">
+    在你的文档目录中运行以下命令：
+
+    ```bash
+ mint dev
+ ```
+
+    在 `http://localhost:3000` 查看预览。
+  </Step>
+
+  <Step title="推送你的更改">
+    提交并推送你的更改以触发一次部署：
+
+    ```bash
+ git add .
+ git commit -m "Update description"
+ git push
+ ```
+
+    Mintlify 会自动部署你的更改。你可以在控制台的 [Overview](https://dashboard.mintlify.com/) 页面查看部署状态。
+  </Step>
+</Steps>
+```
+
+在控制台中前往 \[web editor\]([https://dashboard.mintlify.com/editor)。](https://dashboard.mintlify.com/editor)。)
+
+```
+  <Step title="编辑页面">
+    打开 **Introduction** 页面并更新说明。
+
+    <Frame>
+      <img src="/images/quickstart/hello-world-light.png" alt="在网页编辑器中打开的 Introduction 页面，其中说明已编辑为 Hello world!。" className="block dark:hidden" />
+
+      <img src="/images/quickstart/hello-world-dark.png" alt="在网页编辑器中打开的 Introduction 页面，其中说明已编辑为 Hello world!。" className="hidden dark:block" />
+    </Frame>
+  </Step>
+
+  <Step title="发布">
+    点击网页编辑器工具栏右上角的 **Publish** 按钮。
+  </Step>
+
+  <Step title="查看线上效果">
+    在控制台的 [Overview](https://dashboard.mintlify.com/) 页面中，你可以查看站点的部署状态。部署完成后，刷新你的文档站点即可看到最新的变更。
+  </Step>
+</Steps>
+```
+
+\## 后续步骤
+
+在浏览器中编辑文档，并预览页面发布后的效果。 查找失效链接、检查可访问性、验证 OpenAPI 规范等。 为你的文档站点使用自定义域名。

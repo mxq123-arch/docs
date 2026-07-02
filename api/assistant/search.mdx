@@ -1,0 +1,86 @@
+---
+title: "GET /assistant/search — Search Your Documentation"
+sidebarTitle: "Search"
+description: "GET /assistant/search — Full-text and semantic search across your documentation. Returns ranked results with titles, excerpts, and page URLs."
+---
+
+Use this endpoint to run a full-text and semantic search across your documentation. It returns a ranked list of matching pages with titles, excerpts, and URLs — useful for building custom search UIs, powering autocomplete, or surfacing relevant pages in external tools.
+
+## Authentication
+
+This endpoint requires an **Assistant API key** (`mint_dsc_` prefix) passed as a Bearer token in the `Authorization` header.
+
+## Request
+
+**`GET https://api.mintlify.com/v1/assistant/search`**
+
+### Query Parameters
+
+<ParamField query="q" type="string" required>
+  The search query. For example: `authentication` or `how to add custom CSS`.
+</ParamField>
+
+<ParamField query="deploymentId" type="string" required>
+  The unique identifier for your Mintlify deployment. Search results will be
+  scoped to the documentation in this deployment.
+</ParamField>
+
+<ParamField query="limit" type="integer" default="10">
+  The maximum number of results to return. Defaults to `10`. Increase this to
+  retrieve more candidates for re-ranking or display.
+</ParamField>
+
+## Response
+
+<ResponseField name="results" type="array">
+  A ranked array of matching documentation pages.
+
+  <Expandable title="Result object properties">
+    <ResponseField name="title" type="string">
+      The title of the matching documentation page.
+    </ResponseField>
+
+    <ResponseField name="url" type="string">
+      The full URL of the matching documentation page.
+    </ResponseField>
+
+    <ResponseField name="excerpt" type="string">
+      A short snippet of text from the page that is most relevant to the query.
+    </ResponseField>
+
+    <ResponseField name="score" type="number">
+      A relevance score between `0` and `1`. Higher scores indicate a closer
+      match to the query.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+## Example
+
+<CodeGroup>
+
+```bash cURL
+curl "https://api.mintlify.com/v1/assistant/search?q=authentication&deploymentId=your-deployment-id&limit=5" \
+  -H "Authorization: Bearer mint_dsc_yourAssistantKeyHere"
+```
+
+```json Response
+{
+  "results": [
+    {
+      "title": "Mintlify REST API Reference",
+      "url": "https://mintlify.com/docs/api/introduction",
+      "excerpt": "Mintlify uses two types of API keys, each scoped to a different set of endpoints: Admin API key (mint_) and Assistant API key (mint_dsc_).",
+      "score": 0.97
+    },
+    {
+      "title": "Custom Domain Setup",
+      "url": "https://mintlify.com/docs/settings/custom-domain",
+      "excerpt": "Configure a custom domain to serve your documentation from your own subdomain.",
+      "score": 0.61
+    }
+  ]
+}
+```
+
+</CodeGroup>

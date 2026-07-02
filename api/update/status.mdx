@@ -1,0 +1,68 @@
+---
+title: "GET /update/{updateId} — Get Deployment Status"
+sidebarTitle: "Get Status"
+description: "GET /update/{updateId} — Check the status of a triggered documentation deployment. Returns build status and any error messages."
+---
+
+Use this endpoint to check the progress of a deployment that you started with [Trigger Update](/api/update/trigger). Poll this endpoint after triggering an update to determine when the build has finished or whether it has failed.
+
+## Authentication
+
+This endpoint requires an **Admin API key** (`mint_` prefix) passed as a Bearer token in the `Authorization` header.
+
+## Request
+
+**`GET https://api.mintlify.com/v1/update/{updateId}`**
+
+### Path Parameters
+
+<ParamField path="updateId" type="string" required>
+  The update ID returned by the [Trigger Update](/api/update/trigger) endpoint.
+</ParamField>
+
+## Response
+
+<ResponseField name="updateId" type="string">
+  The unique identifier for this update, matching the value you supplied in the
+  path.
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  The current status of the deployment. Possible values:
+
+  - `pending` — The update has been queued but build has not yet started.
+  - `building` — The site is actively being built and deployed.
+  - `deployed` — The build completed successfully and the site is live.
+  - `failed` — The build encountered an error. Check `errorMessage` for details.
+</ResponseField>
+
+<ResponseField name="errorMessage" type="string">
+  A human-readable description of the error. Only present when `status` is
+  `failed`.
+</ResponseField>
+
+## Example
+
+<CodeGroup>
+
+```bash cURL
+curl https://api.mintlify.com/v1/update/upd_01hx9k2m3n4p5q6r7s8t9u0v \
+  -H "Authorization: Bearer mint_yourAdminKeyHere"
+```
+
+```json Response
+{
+  "updateId": "upd_01hx9k2m3n4p5q6r7s8t9u0v",
+  "status": "deployed"
+}
+```
+
+```json Failed Response
+{
+  "updateId": "upd_01hx9k2m3n4p5q6r7s8t9u0v",
+  "status": "failed",
+  "errorMessage": "Build failed: mint.json is invalid at line 42."
+}
+```
+
+</CodeGroup>

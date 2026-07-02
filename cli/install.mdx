@@ -1,0 +1,156 @@
+---
+title: "Install the Mintlify CLI"
+sidebarTitle: "Installation"
+description: "Install the mint CLI to preview your documentation locally, catch broken links and accessibility issues, and run build validation before every deployment."
+---
+
+The Mintlify CLI (`mint`) runs on your machine and gives you a local preview of your documentation site with live reload, plus a suite of quality-check commands you can run before pushing to production. Install it once globally and use it across all your documentation projects.
+
+## Prerequisites
+
+- [Node.js](https://nodejs.org/en) v20.17.0 or higher (LTS versions recommended)
+
+## Install the CLI
+
+Install the `mint` package globally using npm or pnpm:
+
+<CodeGroup>
+  ```bash npm
+  npm i -g mint
+  ```
+
+  ```bash pnpm
+  pnpm add -g mint
+  ```
+</CodeGroup>
+
+Verify the installation by checking the version:
+
+```bash
+mint version
+```
+
+## Create a new project
+
+Use `mint new` to scaffold a new documentation project from the Mintlify starter template. If you don't specify a directory, the CLI asks whether to create a new subdirectory or overwrite the current one.
+
+```bash
+mint new [directory]
+```
+
+<Warning>
+  Overwriting the current directory deletes any existing files in it. Use the `--force` flag only when you're certain you want to replace the directory's contents.
+</Warning>
+
+The following flags let you skip the interactive prompts:
+
+| Flag | Description |
+| --- | --- |
+| `--name` | Project name. The CLI prompts for this if not provided. |
+| `--theme` | Project [theme](/customize/themes). The CLI prompts for this if not provided. |
+| `--template` | Pre-defined template. The CLI prompts for this if not provided. |
+| `--force` | Overwrite the current directory without prompting. |
+
+In interactive mode, the CLI asks whether you want to pick a theme or clone a template. To skip the prompt entirely, pass `--template` directly:
+
+```bash
+mint new my-docs --template starter
+```
+
+Combine `--template` with `--theme` to override the template's default theme:
+
+```bash
+mint new my-docs --template starter --theme quill
+```
+
+Browse available templates in the [mintlify/templates](https://github.com/mintlify/templates) repository. In interactive mode, the CLI fetches and displays the available list automatically.
+
+<Info>
+  In non-interactive environments such as CI/CD pipelines or AI coding agents, you must provide either `--name` and `--theme`, or the `--template` flag.
+</Info>
+
+## Update the CLI
+
+If your local preview looks out of sync with your deployed documentation, update the CLI to the latest version:
+
+```bash
+mint update
+```
+
+If `mint update` is unavailable on your current version, reinstall directly:
+
+<CodeGroup>
+  ```bash npm
+  npm i -g mint@latest
+  ```
+
+  ```bash pnpm
+  pnpm add -g mint@latest
+  ```
+</CodeGroup>
+
+## Formatting extensions
+
+For syntax highlighting and auto-formatting in MDX files, install the following editor extensions:
+
+- **Cursor, Devin Desktop, VS Code**: [MDX VS Code extension](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx) and [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- **JetBrains**: [MDX IntelliJ IDEA plugin](https://plugins.jetbrains.com/plugin/14944-mdx) and [Prettier](https://prettier.io/docs/webstorm)
+
+## Troubleshooting
+
+<Accordion title="CLI fails to install or run — outdated Node.js">
+  This usually means your Node.js version is too old. The CLI requires Node.js v20.17.0 or higher.
+
+  1. Uninstall the current CLI: `npm uninstall -g mint`
+  2. Upgrade Node.js to v20.17.0 or higher from [nodejs.org](https://nodejs.org/en).
+  3. Reinstall the CLI: `npm install -g mint`
+</Accordion>
+
+<Accordion title="Permission errors when installing globally">
+  If you see EACCES or permission-denied errors, try one of the following:
+
+  **Option 1** — Run with sudo:
+  ```bash
+  sudo npm i -g mint
+  ```
+  When prompted, enter your system password.
+
+  **Option 2** — Delete the Mintlify cache directory:
+  Go to the root of your home directory and delete `~/.mintlify`, then run `mint dev` again.
+</Accordion>
+
+<Accordion title="mint dev is slow or behaving unexpectedly — old CLI version">
+  An outdated CLI can cause unexpected behavior. Update to the latest version:
+
+  ```bash
+  mint update
+  ```
+</Accordion>
+
+<Accordion title="Conflict between mint and mintlify packages">
+  If you have both a `mint` and a `mintlify` package installed, the older `mintlify` package can interfere. Run `npm ls -g` to see your globally installed packages, then uninstall the old one:
+
+  ```bash
+  npm uninstall -g mintlify
+  npm cache clean --force
+  npm i -g mint
+  ```
+
+  If you're not using npm, run `which mint` to locate the active installation.
+</Accordion>
+
+<Accordion title="mint version shows client version as 'none' — firewall blocking downloads">
+  When the client version displays as `none`, the CLI cannot download its client application. This is usually caused by a corporate firewall or VPN blocking the download host.
+
+  Ask your IT administrator to add `releases.mintlify.com` to your network allowlist.
+</Accordion>
+
+<Accordion title="CLI points to localhost instead of Mintlify API — versions before 4.0.1125">
+  In versions before `4.0.1125`, running `npx mint dev` from inside a docs repository could cause the CLI to incorrectly detect itself as a local development build, pointing to `localhost` URLs instead of the Mintlify production API.
+
+  Update to the latest CLI version to resolve this:
+
+  ```bash
+  npm i -g mint@latest
+  ```
+</Accordion>

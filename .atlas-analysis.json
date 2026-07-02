@@ -1,0 +1,160 @@
+{
+  "projectType": "saas",
+  "projectName": "Mintlify",
+  "projectDescription": "Mintlify is an AI-native documentation platform that lets teams write, deploy, and maintain beautiful documentation with a visual editor, Git sync, an AI agent, and an interactive API playground.",
+  "theme": "luma",
+  "primaryColor": "#848c8e",
+  "lightColor": "#11161e",
+  "darkColor": "#cfd0d2",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "cli/install",
+              "cli/commands"
+            ]
+          },
+          {
+            "group": "Web Editor",
+            "pages": [
+              "editor/overview",
+              "editor/tutorial",
+              "editor/branching-and-publishing",
+              "editor/navigation"
+            ]
+          },
+          {
+            "group": "Writing Content",
+            "pages": [
+              "create/text",
+              "create/code",
+              "create/reusable-snippets",
+              "create/images",
+              "components/overview"
+            ]
+          },
+          {
+            "group": "AI Features",
+            "pages": [
+              "ai/overview",
+              "agent/overview",
+              "agent/integrations",
+              "agent/use-cases",
+              "agent/customize",
+              "automations/overview"
+            ]
+          },
+          {
+            "group": "Deploy & Configure",
+            "pages": [
+              "deploy/github",
+              "deploy/deployments",
+              "deploy/authentication-setup",
+              "customize/themes",
+              "customize/custom-domain",
+              "customize/fonts"
+            ]
+          },
+          {
+            "group": "Dashboard",
+            "pages": [
+              "dashboard/roles",
+              "dashboard/permissions",
+              "dashboard/sso"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "api/introduction"
+            ]
+          },
+          {
+            "group": "Deployments",
+            "pages": [
+              "api/update/trigger",
+              "api/update/status",
+              "api/preview/create"
+            ]
+          },
+          {
+            "group": "Agent",
+            "pages": [
+              "api/agent/create-job",
+              "api/agent/get-job",
+              "api/agent/send-message"
+            ]
+          },
+          {
+            "group": "Assistant",
+            "pages": [
+              "api/assistant/create-message",
+              "api/assistant/search",
+              "api/assistant/get-page"
+            ]
+          },
+          {
+            "group": "Analytics",
+            "pages": [
+              "api/analytics/feedback",
+              "api/analytics/search-queries",
+              "api/analytics/page-views"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Visual web editor with real-time collaboration and Git sync",
+    "AI agent that writes and maintains docs via pull requests",
+    "Interactive API playground from OpenAPI specifications",
+    "AI assistant embedded in docs for user Q&A",
+    "Automations for scheduled and event-triggered doc updates",
+    "Custom themes, fonts, and domain configuration",
+    "Role-based access control and SSO (Enterprise)",
+    "CLI for local preview, validation, and broken-link checks",
+    "MCP server and llms.txt for AI tool discoverability",
+    "Integrations with Slack, Notion, Linear, Jira, and more"
+  ],
+  "publicApiSurface": [
+    "POST /update/trigger",
+    "GET /update/{updateId}",
+    "POST /preview",
+    "POST /agent/jobs",
+    "GET /agent/jobs/{jobId}",
+    "POST /agent/jobs/{jobId}/messages",
+    "POST /assistant/messages",
+    "GET /assistant/search",
+    "GET /assistant/page",
+    "GET /analytics/feedback",
+    "GET /analytics/feedback/{pageSlug}",
+    "GET /analytics/conversations",
+    "GET /analytics/search",
+    "GET /analytics/page-views",
+    "GET /analytics/visitors",
+    "mint dev",
+    "mint build",
+    "mint validate",
+    "mint broken-links",
+    "mint a11y",
+    "mint score",
+    "mint export",
+    "mint automations create",
+    "mint automations list",
+    "mint automations delete",
+    "mint login",
+    "mint new"
+  ]
+}

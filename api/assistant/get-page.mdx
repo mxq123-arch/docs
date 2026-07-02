@@ -1,0 +1,62 @@
+---
+title: "GET /assistant/page — Get Page Content as Markdown"
+sidebarTitle: "Get Page"
+description: "GET /assistant/page — Retrieve the Markdown content of a documentation page by URL. Useful for feeding page content to AI tools or LLMs."
+---
+
+Use this endpoint to fetch the full Markdown content of any page in your documentation by its URL. This is particularly useful when you want to feed documentation content to an LLM, build a retrieval-augmented generation (RAG) pipeline, or programmatically inspect page content without scraping HTML.
+
+## Authentication
+
+This endpoint requires an **Assistant API key** (`mint_dsc_` prefix) passed as a Bearer token in the `Authorization` header.
+
+## Request
+
+**`GET https://api.mintlify.com/v1/assistant/page`**
+
+### Query Parameters
+
+<ParamField query="url" type="string" required>
+  The full URL of the documentation page whose content you want to retrieve. For
+  example: `https://mintlify.com/docs/api/introduction`.
+</ParamField>
+
+## Response
+
+<ResponseField name="content" type="string">
+  The full content of the page rendered as Markdown.
+</ResponseField>
+
+<ResponseField name="title" type="string">
+  The title of the documentation page.
+</ResponseField>
+
+<ResponseField name="url" type="string">
+  The canonical URL of the page, matching the value you supplied in the query.
+</ResponseField>
+
+<Tip>
+  You can also retrieve the raw Markdown content of any Mintlify documentation
+  page without an API key by appending `.md` to the page URL in your browser or
+  HTTP client. For example:
+  `https://mintlify.com/docs/api/introduction.md`
+</Tip>
+
+## Example
+
+<CodeGroup>
+
+```bash cURL
+curl "https://api.mintlify.com/v1/assistant/page?url=https://mintlify.com/docs/api/introduction" \
+  -H "Authorization: Bearer mint_dsc_yourAssistantKeyHere"
+```
+
+```json Response
+{
+  "title": "Mintlify REST API Reference",
+  "url": "https://mintlify.com/docs/api/introduction",
+  "content": "# Mintlify REST API Reference\n\nThe Mintlify REST API gives you programmatic control over your documentation platform...\n"
+}
+```
+
+</CodeGroup>

@@ -1,0 +1,104 @@
+---
+title: "Set Custom Fonts for Your Documentation Site"
+sidebarTitle: "Fonts"
+description: "Apply Google Fonts, local font files, or externally hosted fonts to your docs — set a single font for the whole site or different fonts for headings and body."
+---
+
+Mintlify lets you customize the typography of your documentation site with any font you choose. You can apply a single font across the entire site, or configure separate fonts for headings and body text to create more refined typographic hierarchy. The default font varies depending on which theme you have selected.
+
+Configure fonts using the `fonts` property in your `docs.json`.
+
+## Google Fonts
+
+Mintlify automatically loads [Google Fonts](https://fonts.google.com) when you specify a font family name. You don't need a source URL — just provide the family name exactly as it appears on Google Fonts:
+
+```json
+{
+  "fonts": {
+    "family": "Inter"
+  }
+}
+```
+
+## Local fonts
+
+To use self-hosted font files, place them in your project directory and reference them by path in your `docs.json`.
+
+### File structure
+
+Create a `fonts` directory at your project root and add your font files:
+
+```
+your-project/
+├── fonts/
+│   ├── InterDisplay-Regular.woff2
+│   └── InterDisplay-Bold.woff2
+├── docs.json
+└── ...
+```
+
+### Reference local fonts
+
+Point to your font files using paths relative to your project root:
+
+```json
+{
+  "fonts": {
+    "family": "InterDisplay",
+    "source": "/fonts/InterDisplay-Regular.woff2",
+    "format": "woff2",
+    "weight": 400
+  }
+}
+```
+
+### Separate heading and body fonts
+
+Configure different local fonts for headings and body text using the `heading` and `body` sub-properties:
+
+```json
+{
+  "fonts": {
+    "heading": {
+      "family": "InterDisplay",
+      "source": "/fonts/InterDisplay-Bold.woff2",
+      "format": "woff2",
+      "weight": 700
+    },
+    "body": {
+      "family": "InterDisplay",
+      "source": "/fonts/InterDisplay-Regular.woff2",
+      "format": "woff2",
+      "weight": 400
+    }
+  }
+}
+```
+
+## Externally hosted fonts
+
+You can also reference fonts hosted on an external CDN or server by providing a full URL as the source:
+
+```json
+{
+  "fonts": {
+    "family": "Hubot Sans",
+    "source": "https://mintlify-assets.b-cdn.net/fonts/Hubot-Sans.woff2",
+    "format": "woff2",
+    "weight": 400
+  }
+}
+```
+
+## Font configuration reference
+
+The following fields are available when configuring fonts in `docs.json`.
+
+| Property | Type | Required | Description |
+|---|---|---|---|
+| `family` | `string` | Yes | Font family name, such as `"Inter"` or `"Playfair Display"`. For Google Fonts, this is all you need — no `source` required. |
+| `weight` | `number` | No | Numeric font weight, such as `400` (regular) or `700` (bold). Variable fonts support precise weights such as `550`. |
+| `source` | `string` | No | URL to an externally hosted font file or a path to a local font file (for example, `/fonts/InterDisplay.woff2`). Not needed for Google Fonts. |
+| `format` | `'woff' \| 'woff2'` | Conditional | Font file format. Required when using the `source` field. |
+| `heading` | `object` | No | Override font settings specifically for heading text. Accepts `family`, `weight`, `source`, and `format`. |
+| `body` | `object` | No | Override font settings specifically for body text. Accepts `family`, `weight`, `source`, and `format`. |

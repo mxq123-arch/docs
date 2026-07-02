@@ -1,0 +1,69 @@
+---
+title: "POST /preview — Create a Preview Deployment"
+sidebarTitle: "Create Preview"
+description: "POST /preview — Create or update a preview deployment programmatically for CI/CD pipelines. Returns a preview URL to share with reviewers."
+---
+
+Use this endpoint to create or refresh a preview deployment for a specific Git branch. Preview deployments give reviewers a live URL to inspect documentation changes before they merge into your main branch. Call this endpoint from your CI/CD pipeline on pull request open or push events to keep preview URLs up to date automatically.
+
+## Authentication
+
+This endpoint requires an **Admin API key** (`mint_` prefix) passed as a Bearer token in the `Authorization` header.
+
+## Request
+
+**`POST https://api.mintlify.com/v1/preview`**
+
+### Body Parameters
+
+<ParamField body="deploymentId" type="string" required>
+  The unique identifier for your Mintlify deployment. Find this on the
+  deployment settings page in your dashboard.
+</ParamField>
+
+<ParamField body="branch" type="string" required>
+  The name of the Git branch to build the preview from. For example,
+  `feat/new-authentication-guide`.
+</ParamField>
+
+## Response
+
+<ResponseField name="previewUrl" type="string">
+  The public URL for the preview deployment. Share this with reviewers so they
+  can inspect changes before merging.
+</ResponseField>
+
+<ResponseField name="previewId" type="string">
+  A unique identifier for this preview deployment. Use it to reference or update
+  this preview in future requests.
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  The current build status of the preview deployment. Typically `building`
+  immediately after creation and `deployed` once the build completes.
+</ResponseField>
+
+## Example
+
+<CodeGroup>
+
+```bash cURL
+curl https://api.mintlify.com/v1/preview \
+  -X POST \
+  -H "Authorization: Bearer mint_yourAdminKeyHere" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "deploymentId": "your-deployment-id",
+    "branch": "feat/new-authentication-guide"
+  }'
+```
+
+```json Response
+{
+  "previewUrl": "https://preview.mintlify.com/your-org/feat-new-authentication-guide",
+  "previewId": "prev_01hx9k2m3n4p5q6r7s8t9u0v",
+  "status": "building"
+}
+```
+
+</CodeGroup>

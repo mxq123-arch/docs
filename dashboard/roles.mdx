@@ -1,0 +1,61 @@
+---
+title: "Manage Team Roles in Your Mintlify Dashboard"
+sidebarTitle: "Roles"
+description: "Control what your team members can see and do by assigning viewer, editor, or admin roles to each person in your Mintlify organization."
+---
+
+Mintlify gives you three distinct access levels to match what each team member actually needs to do. Viewers can read content and analytics without making any changes. Editors can create pages, publish changes, and configure integrations. Admins have full control over the organization, including billing, SSO, and user management.
+
+<Note>
+  Role-based access control (RBAC) is available on [Enterprise plans](https://mintlify.com/pricing?ref=rbac). On other plans, all dashboard members share the same access level.
+</Note>
+
+## Permissions by role
+
+The table below shows exactly what each role can do across every area of your Mintlify dashboard.
+
+| Permission | Viewer | Editor | Admin |
+| --- | :-: | :-: | :-: |
+| View content in the editor | ✅ | ✅ | ✅ |
+| View dashboard and analytics | ✅ | ✅ | ✅ |
+| Ask the [Slack agent](/agent/slack) questions | ✅ | ✅ | ✅ |
+| Make changes with the Slack agent | ❌ | ✅ | ✅ |
+| Edit content in the web editor | ❌ | ✅ | ✅ |
+| Publish changes | ❌ | ✅ | ✅ |
+| Create, rename, and delete pages | ❌ | ✅ | ✅ |
+| Reorder navigation | ❌ | ✅ | ✅ |
+| Upload media | ❌ | ✅ | ✅ |
+| Trigger deployments | ❌ | ✅ | ✅ |
+| Create and delete API keys | ❌ | ✅ | ✅ |
+| Configure integrations | ❌ | ✅ | ✅ |
+| Configure assistant | ❌ | ✅ | ✅ |
+| Configure add-ons | ❌ | ✅ | ✅ |
+| Invite editors and viewers | ❌ | ✅ | ✅ |
+| Update user roles | ❌ | ❌ | ✅ |
+| Invite admins | ❌ | ❌ | ✅ |
+| Delete users | ❌ | ❌ | ✅ |
+| Manage billing | ❌ | ❌ | ✅ |
+| Manage SSO | ❌ | ❌ | ✅ |
+| Update custom domain | ❌ | ❌ | ✅ |
+| Update Git source | ❌ | ❌ | ✅ |
+| Delete organization | ❌ | ❌ | ✅ |
+
+<Tip>
+  Limit the admin role to only the people who need to perform administrative tasks like managing billing, SSO, or organization settings. Most contributors only need editor or viewer access.
+</Tip>
+
+## Add members to your organization
+
+By default, the person who creates your Mintlify organization has admin access. You can invite additional members at any time from the [Members](https://app.mintlify.com/settings/organization/members) page in your dashboard. There is no cap on the number of members you can add to your organization.
+
+<Steps>
+  <Step title="Open the Members page">
+    In your Mintlify dashboard, navigate to **Settings** → **Organization** → **Members**.
+  </Step>
+  <Step title="Invite a new member">
+    Click **Invite member**, enter the person's email address, and select the role you want to assign them: Viewer, Editor, or Admin.
+  </Step>
+  <Step title="Send the invitation">
+    Click **Send invite**. The invitee receives an email with a link to join your organization. Their role takes effect as soon as they accept.
+  </Step>
+</Steps>

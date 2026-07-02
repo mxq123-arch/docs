@@ -1,0 +1,263 @@
+---
+title: "Set Up Single Sign-On for Your Mintlify Team"
+sidebarTitle: "SSO"
+description: "Configure SAML or OIDC single sign-on with Okta, Microsoft Entra, or Google Workspace to centralize authentication for your Mintlify organization."
+---
+
+Single sign-on (SSO) lets your team authenticate to Mintlify through your existing identity provider instead of managing separate passwords. Once SSO is configured, you can enforce it organization-wide, automatically provision new members on first login, and map identity provider groups to Mintlify roles — all from your dashboard.
+
+<Note>
+  SSO is available on [Enterprise plans](https://mintlify.com/pricing?ref=sso). Enterprise admins can configure Okta SAML and Microsoft Entra SAML directly in the dashboard. For other providers, [contact the Mintlify team](mailto:support@mintlify.com) to get set up.
+</Note>
+
+## Configure SSO
+
+<Tabs>
+  <Tab title="Okta SAML">
+    <Steps>
+      <Step title="Start configuration in Mintlify">
+        In your Mintlify dashboard, navigate to the [Single Sign-On](https://app.mintlify.com/settings/organization/sso) page. Click **Configure**, then select **Okta SAML**. Copy the **Single sign on URL** and **Audience URI** — you'll need both in the next step.
+      </Step>
+      <Step title="Create a SAML app integration in Okta">
+        In Okta, go to **Applications** and create a new app integration using **SAML 2.0**. Enter the values you copied from Mintlify:
+
+        | Field | Value |
+        | --- | --- |
+        | **Single sign on URL** | The URL from your Mintlify dashboard |
+        | **Audience URI** | The URI from your Mintlify dashboard |
+        | **Name ID Format** | `EmailAddress` |
+      </Step>
+      <Step title="Add attribute statements">
+        In the same Okta SAML configuration, add the following attribute statements so Mintlify can read each user's name:
+
+        | Name | Name format | Value |
+        | --- | --- | --- |
+        | `firstName` | Basic | `user.firstName` |
+        | `lastName` | Basic | `user.lastName` |
+      </Step>
+      <Step title="Copy the metadata URL back to Mintlify">
+        In Okta, go to the **Sign On** tab of your application and copy the **Metadata URL**. Return to the Mintlify dashboard, paste the metadata URL into the provided field, and click **Save changes**.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Microsoft Entra SAML">
+    <Steps>
+      <Step title="Start configuration in Mintlify">
+        In your Mintlify dashboard, navigate to the [Single Sign-On](https://app.mintlify.com/settings/organization/sso) page. Click **Configure**, then select **Microsoft Entra ID SAML**. Copy the **Single sign on URL** and **Audience URI**.
+      </Step>
+      <Step title="Create a new enterprise application">
+        In Microsoft Entra, navigate to **Enterprise applications** and click **New application**. Click **Create your own application** and select **Integrate any other application you don't find in the gallery (Non-gallery)**.
+      </Step>
+      <Step title="Configure basic SAML settings">
+        In your new application, navigate to **Single Sign-On** and click **SAML**. Under **Basic SAML Configuration**, enter the values from Mintlify:
+
+        | Field | Value |
+        | --- | --- |
+        | **Identifier (Entity ID)** | The Audience URI from Mintlify |
+        | **Reply URL (Assertion Consumer Service URL)** | The Single sign on URL from Mintlify |
+
+        Leave all other fields blank and click **Save**.
+      </Step>
+      <Step title="Configure attributes and claims">
+        In Microsoft Entra, navigate to **Attributes & Claims**. Select **Unique User Identifier (Name ID)** under "Required Claim" and change the Source attribute to `user.primaryauthoritativeemail`.
+
+        Under **Additional claims**, add the following:
+
+        | Name | Value |
+        | --- | --- |
+        | `firstName` | `user.givenname` |
+        | `lastName` | `user.surname` |
+      </Step>
+      <Step title="Copy the metadata URL back to Mintlify">
+        Under **SAML Certificates**, copy the **App Federation Metadata URL**. Return to the Mintlify dashboard, paste the URL into the provided field, and click **Save changes**.
+      </Step>
+      <Step title="Assign users in Microsoft Entra">
+        In Microsoft Entra, navigate to **Users and groups** and assign the users who should have access to your Mintlify dashboard.
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+## JIT provisioning
+
+Just-in-time (JIT) provisioning automatically adds users to your Mintlify organization the first time they sign in through your identity provider — no manual invitation required.
+
+To enable JIT provisioning, you must have SSO configured first. Navigate to the [Single Sign-On](https://app.mintlify.com/settings/organization/sso) page in your dashboard, confirm SSO is active, and then toggle **JIT provisioning** on.
+
+<Note>
+  JIT provisioning only works for IdP-initiated login. Users must start the sign-in flow from your identity provider — the Okta dashboard or Microsoft Entra portal — rather than from the Mintlify login page.
+</Note>
+
+## Enforce SSO-only sign-in
+
+Once your SSO setup is verified end-to-end, you can require everyone in the organization to authenticate exclusively through your identity provider. When enforcement is on, Mintlify rejects password, magic link, and Google OAuth sign-ins for all members except those listed as [breakglass emails](#breakglass-emails).
+
+<Steps>
+  <Step title="Open the SSO settings page">
+    Navigate to the [Single Sign-On](https://app.mintlify.com/settings/organization/sso) page in your dashboard.
+  </Step>
+  <Step title="Verify your SSO configuration">
+    Confirm that SSO is fully configured and that at least one organization owner can sign in through your identity provider.
+  </Step>
+  <Step title="Turn on enforcement">
+    Toggle **Enforce SSO-only sign-in** on. The setting takes effect immediately.
+  </Step>
+</Steps>
+
+To stop enforcing SSO, toggle the setting off. All other sign-in methods become available again right away.
+
+<Warning>
+  Mintlify blocks SSO enforcement if turning it on would lock every owner out of the organization. Before enforcing, configure at least one breakglass email or confirm that an owner can successfully complete an IdP-initiated login. If you get locked out, contact [support@mintlify.com](mailto:support@mintlify.com).
+</Warning>
+
+## Verified domains
+
+Add the domains your organization owns so Mintlify can associate sign-ins and invitations with a trusted identity. You can add up to five verified domains per organization.
+
+<Steps>
+  <Step title="Add a domain">
+    Navigate to the [Single Sign-On](https://app.mintlify.com/settings/organization/sso) page. In the **Verified domains** section, click **Add domain**, enter your domain (for example, `example.com`), and click **Add**.
+  </Step>
+  <Step title="Add the DNS TXT record">
+    Mintlify generates a verification token. Add it as a DNS TXT record on the domain through your DNS provider.
+  </Step>
+  <Step title="Verify the domain">
+    Return to the dashboard and click **Verify**. Once the DNS record propagates, the domain status changes from **Pending** to **Verified**.
+  </Step>
+</Steps>
+
+To remove a domain, click the delete button beside it in the **Verified domains** section.
+
+## Breakglass emails
+
+Breakglass emails designate emergency-access accounts that can sign in even when SSO enforcement is active or your identity provider is unreachable. They're your safety net if your IdP experiences an outage or a misconfiguration locks members out.
+
+<Steps>
+  <Step title="Open the SSO settings page">
+    Navigate to the [Single Sign-On](https://app.mintlify.com/settings/organization/sso) page in your dashboard.
+  </Step>
+  <Step title="Add breakglass emails">
+    In the **Breakglass emails** section, enter the email addresses of the organization members who should retain non-SSO access.
+  </Step>
+  <Step title="Save your changes">
+    Click **Save changes**. Those members can now sign in with a password, magic link, or Google OAuth regardless of whether SSO enforcement is on.
+  </Step>
+</Steps>
+
+Each breakglass email must already belong to a current member of your organization. Use breakglass accounts for owner-level accounts that aren't tied to your primary IdP, store the credentials in a secure password manager, and review the list whenever team membership changes.
+
+## Map RBAC roles with SAML groups
+
+You can assign [Mintlify roles](/dashboard/roles) to users based on their identity provider group membership. When a user signs in through SSO, Mintlify reads the `groups` attribute from the SAML assertion and maps those groups to dashboard roles automatically.
+
+### Configure group attribute statements
+
+Add a `groups` attribute statement to your SAML identity provider configuration. The attribute **must** use the `unspecified` name format. The resulting SAML assertion should include an `AttributeStatement` like this:
+
+```xml
+<saml2:AttributeStatement xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">
+    <saml2:Attribute Name="groups" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified">
+        <saml2:AttributeValue xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                              xsi:type="xs:string">Everyone</saml2:AttributeValue>
+        <saml2:AttributeValue xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                              xsi:type="xs:string">Engineering</saml2:AttributeValue>
+        <saml2:AttributeValue xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                              xsi:type="xs:string">Admins</saml2:AttributeValue>
+    </saml2:Attribute>
+</saml2:AttributeStatement>
+```
+
+Keep these requirements in mind when configuring the attribute:
+
+- The attribute name must be exactly `groups` (case-sensitive).
+- The name format must be `urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified`.
+- Each group the user belongs to must be a separate `AttributeValue` element.
+
+<AccordionGroup>
+  <Accordion title="Okta: add a group attribute statement">
+    In your Okta SAML app configuration, add a group attribute statement with the following settings:
+
+    | Name | Name format | Filter | Value |
+    | --- | --- | --- | --- |
+    | `groups` | Unspecified | Matches regex | `.*` |
+
+    Adjust the regex filter to target only the specific groups you want to send to Mintlify.
+  </Accordion>
+  <Accordion title="Microsoft Entra: add a group claim">
+    In your Microsoft Entra enterprise application:
+
+    1. Navigate to **Single Sign-On** → **Attributes & Claims**.
+    2. Click **Add a group claim**.
+    3. Select which groups to include — all groups or specific ones.
+    4. Under **Advanced options**, check **Customize the name of the group claim** and set the name to `groups`.
+  </Accordion>
+</AccordionGroup>
+
+Once the group attribute is configured in your IdP, Mintlify maps the group names from the SAML assertion to roles in your organization. To set up or modify your group-to-role mappings, reach out to your Mintlify account representative.
+
+## Change or remove SSO provider
+
+<Steps>
+  <Step title="Open SSO settings">
+    Navigate to the [Single Sign-On](https://app.mintlify.com/settings/organization/sso) page in your dashboard.
+  </Step>
+  <Step title="Select a different provider or remove SSO">
+    Click **Configure** and select your preferred SSO provider. To disable SSO entirely, select the option for no SSO.
+  </Step>
+</Steps>
+
+If you remove SSO, users must authenticate with a password, magic link, or Google OAuth going forward.
+
+## Other providers
+
+For providers not listed here, [contact the Mintlify team](mailto:support@mintlify.com) to configure SSO.
+
+<AccordionGroup>
+  <Accordion title="Google Workspace with SAML">
+    <Steps>
+      <Step title="Create a custom SAML app in Google Workspace">
+        In Google Workspace, navigate to **Web and mobile apps**. In the **Add app** dropdown, click **Add custom SAML app**.
+      </Step>
+      <Step title="Share your IdP metadata with Mintlify">
+        Copy the **SSO URL**, **Entity ID**, and **x509 certificate** that Google provides, then send them to the Mintlify team. The team will provide you with your **ACS URL** and **Entity ID** in return.
+      </Step>
+      <Step title="Enter service provider details">
+        On the **Service provider details** page in Google Workspace, enter the following:
+
+        | Field | Value |
+        | --- | --- |
+        | **ACS URL** | Provided by Mintlify |
+        | **Entity ID** | Provided by Mintlify |
+        | **Name ID format** | `EMAIL` |
+        | **Name ID** | `Basic Information > Primary email` |
+      </Step>
+      <Step title="Add attribute statements">
+        On the next page, add the following attribute mappings:
+
+        | Google Directory Attribute | App Attribute |
+        | --- | --- |
+        | `First name` | `firstName` |
+        | `Last name` | `lastName` |
+      </Step>
+      <Step title="Assign users and notify Mintlify">
+        Assign the relevant users to the application in Google Workspace, then let the Mintlify team know. They'll enable SSO for your account.
+      </Step>
+    </Steps>
+  </Accordion>
+  <Accordion title="Okta OIDC">
+    <Steps>
+      <Step title="Create an OIDC app integration in Okta">
+        In Okta, navigate to **Applications** and create a new app integration using **OIDC**. Choose the **Web Application** type and select the **Authorization Code** grant type.
+      </Step>
+      <Step title="Enter the redirect URI">
+        Enter the redirect URI provided by the Mintlify team in the **Redirect URI** field.
+      </Step>
+      <Step title="Share credentials with Mintlify">
+        Navigate to the **General** tab of your new application and locate the **Client ID** and **Client Secret**. Share these securely with the Mintlify team — along with your Okta instance URL (for example, `yourorg.okta.com`) — using a service like 1Password or SendSafely.
+      </Step>
+    </Steps>
+  </Accordion>
+</AccordionGroup>

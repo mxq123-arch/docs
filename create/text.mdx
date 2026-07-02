@@ -1,0 +1,272 @@
+---
+title: "Format Text in Your Mintlify Documentation"
+sidebarTitle: "Text"
+description: "Apply headings, bold, italic, links, block quotes, math expressions, and other Markdown formatting to text in your Mintlify MDX pages."
+---
+
+Mintlify pages use MDX, a superset of Markdown, so you can format text using familiar Markdown syntax alongside React components. This page covers everything from basic inline formatting and headings to LaTeX equations, comments, and how to escape special characters in MDX.
+
+## Headings
+
+Headings organize your content and automatically generate navigation anchors that appear in the table of contents, helping users scan and jump to specific sections.
+
+### Create headings
+
+Use `#` symbols to create headings of different levels:
+
+```mdx
+## Main section heading
+### Subsection heading
+#### Sub-subsection heading
+```
+
+Use `##` (H2) through `######` (H6) for content sections. The `title` set in a page's frontmatter renders as the top-level `#` (H1) heading — do not add a top-level `#` heading inside the page body. Use descriptive, keyword-rich headings that clearly indicate the content that follows, which improves both user navigation and SEO.
+
+### Custom heading IDs
+
+By default, Mintlify automatically generates anchor IDs from heading text. Override the generated ID with a custom one using the `{#custom-id}` syntax:
+
+```mdx
+## My section {#my-custom-anchor}
+### Configuration options {#config}
+##### Deep detail {#detail}
+```
+
+The custom ID replaces the auto-generated anchor, so you can link directly to `#my-custom-anchor` or `#config` instead of the default slugified text. Use custom IDs to keep anchor links stable when you later update the heading wording.
+
+### Disable anchor links
+
+By default, every heading includes a clickable anchor chip that lets users copy a direct link to that section. Disable anchor links on individual headings using the `noAnchor` prop:
+
+```mdx
+<h2 noAnchor>
+Heading without anchor link
+</h2>
+```
+
+```mdx
+<Heading level={2} noAnchor>
+Heading without anchor link
+</Heading>
+```
+
+When `noAnchor` is set, the heading does not display the anchor chip and clicking the heading text does not copy the anchor URL to the clipboard.
+
+## Text formatting
+
+Mintlify supports standard Markdown inline formatting for emphasizing and styling text.
+
+### Basic formatting
+
+| Style | Syntax | Example | Result |
+| --- | --- | --- | --- |
+| **Bold** | `**text**` | `**important note**` | **important note** |
+| _Italic_ | `_text_` | `_emphasis_` | _emphasis_ |
+| ~Strikethrough~ | `~text~` | `~deprecated feature~` | ~deprecated feature~ |
+
+### Combine formats
+
+You can nest formatting styles to apply more than one at a time:
+
+```mdx
+**_bold and italic_**
+**~bold and strikethrough~**
+_~italic and strikethrough~_
+```
+
+### Superscript and subscript
+
+Use HTML tags for superscript and subscript, which are common in mathematical notation and footnotes:
+
+| Type | Syntax | Example |
+| --- | --- | --- |
+| Superscript | `<sup>text</sup>` | `example<sup>2</sup>` |
+| Subscript | `<sub>text</sub>` | `example<sub>n</sub>` |
+
+## Links
+
+Links help users navigate between pages and access external resources. Always use descriptive link text to improve accessibility.
+
+### Internal links
+
+Link to other pages in your documentation using root-relative paths. Omit the file extension (`.mdx` or `.md`) — relative paths and paths with extensions do not resolve correctly in production:
+
+```mdx
+[Quickstart](/quickstart)
+[Steps](/components/steps)
+```
+
+### External links
+
+For external resources, include the full URL:
+
+```mdx
+[Markdown Guide](https://www.markdownguide.org/)
+```
+
+### Check for broken links
+
+Use the Mintlify CLI to scan your documentation for broken links before publishing:
+
+```shell
+mint broken-links
+```
+
+## Block quotes
+
+Block quotes visually separate quoted content or passages that need to stand out from the main body text.
+
+### Single-line block quotes
+
+Add `>` before any line of text to create a block quote:
+
+```mdx
+> This is text that stands out from the main content.
+```
+
+> This is text that stands out from the main content.
+
+### Multi-line block quotes
+
+Extend a block quote across multiple paragraphs by adding `>` to each line, including blank separator lines:
+
+```mdx
+> This is the first paragraph of a multi-line block quote.
+>
+> This is the second paragraph, separated by an empty line with `>`.
+```
+
+> This is the first paragraph of a multi-line block quote.
+>
+> This is the second paragraph, separated by an empty line with `>`.
+
+<Tip>
+Use block quotes sparingly to preserve their visual impact. For notes, warnings, and tips, use [callout components](/components/callouts) such as `<Note>`, `<Warning>`, and `<Tip>` instead.
+</Tip>
+
+## Mathematical expressions
+
+Mintlify supports LaTeX for rendering mathematical expressions and equations. You can override automated detection by configuring `styling.latex` in your `docs.json` [settings](/organize/settings-appearance#styling).
+
+### Inline math
+
+Wrap an expression in single dollar signs `$...$` to render it inline with surrounding text:
+
+```mdx
+The Pythagorean theorem states that $(a^2 + b^2 = c^2)$ in a right triangle.
+```
+
+The Pythagorean theorem states that $(a^2 + b^2 = c^2)$ in a right triangle.
+
+### Block equations
+
+Use double dollar signs `$$...$$` to display a standalone, centered equation:
+
+```mdx
+$$
+E = mc^2
+$$
+```
+
+$$
+E = mc^2
+$$
+
+Refer to the [LaTeX documentation](https://www.latex-project.org/help/documentation/) for comprehensive syntax guidelines.
+
+## Line breaks and spacing
+
+### Paragraph breaks
+
+Separate paragraphs with a blank line:
+
+```mdx
+This is the first paragraph.
+
+This is the second paragraph, separated by a blank line.
+```
+
+### Manual line breaks
+
+Insert a `<br />` tag to force a line break within a paragraph without starting a new one:
+
+```mdx
+This line ends here.<br />
+This line starts on a new line.
+```
+
+In most cases, paragraph breaks with blank lines provide better readability than manual line breaks.
+
+### Horizontal rules
+
+Add a horizontal rule to visually separate sections using `---` or an `<hr />` tag:
+
+```mdx
+Content preceding the rule.
+
+---
+
+Content following the rule.
+```
+
+Use horizontal rules sparingly. Headings typically provide better section separation because they also create navigation anchors.
+
+## Comments
+
+Add MDX-style comments to your source files for notes, reminders, or to-dos. Comments do not render in the published page:
+
+```mdx
+{/* This is a comment and won't appear in the published docs. */}
+
+{/*
+  Multi-line comments work too.
+  Useful for TODOs or reviewer notes.
+*/}
+```
+
+<Warning>
+HTML-style `<!-- -->` comments are **not** supported in MDX. Always use `{/* ... */}` instead.
+</Warning>
+
+## Escape special characters
+
+MDX treats `{` and `}` as JSX expression delimiters and `<` as the start of a JSX tag. Escape these characters when you want them to appear as literal text:
+
+| Character | How to escape |
+| :-- | :-- |
+| `{` and `}` | Wrap in backticks (`` `{` ``), use HTML entities (`&#123;` / `&#125;`), or write as a JSX string expression (`{'{'}`) |
+| `<` | Wrap in backticks (`` `<` ``), use the HTML entity `&lt;`, or write `{'<'}` |
+| `` ` `` | Use a backslash (`` \` ``) |
+| `\` | Use a double backslash (`\\`) |
+
+```mdx
+Use the `{variable}` syntax to interpolate values.
+
+The placeholder &#123;name&#125; renders as literal curly braces.
+
+In JSX, write {'{ key: value }'} to display a literal object.
+```
+
+<Note>
+Inside fenced code blocks, MDX does not parse curly braces, so you can write `{variable}` directly without escaping. Escaping is only required in regular prose and inside JSX attributes.
+</Note>
+
+## Best practices
+
+### Content organization
+
+- Use headings to create a clear content hierarchy.
+- Follow proper heading order — do not skip from H2 to H4.
+- Write descriptive, keyword-rich heading text that accurately describes what follows.
+
+### Text formatting
+
+- Use **bold** for emphasis on key terms, not for entire paragraphs.
+- Reserve _italics_ for titles, technical terms, or subtle emphasis.
+- Avoid over-formatting, which distracts readers from the content itself.
+
+### Links
+
+- Write descriptive link text instead of "click here" or "read more."
+- Use root-relative paths (starting with `/`) for all internal links.
+- Run `mint broken-links` regularly to catch and fix broken references before they reach readers.

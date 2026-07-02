@@ -1,0 +1,64 @@
+---
+title: "How to Edit and Publish Docs in the Web Editor"
+sidebarTitle: "Tutorial"
+description: "Step-by-step walkthrough of the Mintlify editor: create a branch, edit pages, share a preview for review, and publish your changes."
+---
+
+This tutorial walks you through a complete content update using the Mintlify web editor. You'll create a branch to isolate your work, make a change, share a preview URL for team review, and then merge and publish your update to your live site.
+
+<Steps>
+
+  <Step title="Create a branch">
+    A branch is a temporary, isolated copy of your content where you can make changes without affecting your live site. Think of branches like drafts — you can merge them into your live site when you're ready, or safely discard them if you change your mind.
+
+    1. In the editor toolbar, click the branch name (usually `main`).
+    2. Click **Create new branch**.
+    3. Enter a name that describes your change, such as `update-quickstart`.
+    4. Click **Create branch**.
+
+    The editor switches to your new branch automatically. Any edits you make exist only on this branch until you complete the publishing process.
+  </Step>
+
+  <Step title="Edit or create a page">
+    With your branch active, open an existing page or create a new one.
+
+    **To edit a page:** Click the page name in the navigation sidebar to open it. Type directly in the editor to add or change content. Press `/` to open the component picker and insert callouts, code blocks, images, and more.
+
+    **To create a page:** Click the **+** (plus) button next to the navigation group where you want to add the page, then click **Add a page** and enter a filename.
+
+    Your edits save automatically as you type — you don't need to manually save your work.
+  </Step>
+
+  <Step title="Create a pull request">
+    When you're ready for review, open the publish menu to create a pull request. A pull request is a proposal to merge your branch changes into the branch that builds your live site — your changes only go live after someone approves and merges it.
+
+    1. Click **Publish** in the toolbar to open the publish menu.
+    2. Optionally, click any changed file in the list to open a diff view and compare your edits against the current published version.
+    3. Click **Create pull request**.
+    4. Add a title and optional description for your pull request.
+    5. Click **Publish pull request**.
+
+    <Note>
+      You can also click **Save in branch** to commit your changes to the branch without opening a pull request yet. This is useful when you want to keep editing or save your progress before requesting review.
+    </Note>
+  </Step>
+
+  <Step title="Share your preview URL">
+    After the pull request is created, Mintlify automatically builds a preview deployment — a temporary URL where your changes render exactly as they would on your live site.
+
+    Open the publish menu to find the preview URL, then copy it and send it to your reviewers.
+
+    <Tip>
+      The preview URL follows the format `organization-branch-name.mintlify.site`. It's publicly accessible and updates automatically every time you save new changes to the branch, so reviewers always see your latest edits.
+    </Tip>
+  </Step>
+
+  <Step title="Get review and merge">
+    Share the pull request with your team. Reviewers can open it in GitHub or GitLab to leave comments, request changes, or approve it. If a reviewer requests changes, make your edits on the same branch — the pull request updates automatically and you don't need to create a new one.
+
+    Once all required reviewers have approved, click **Publish** in the toolbar to reopen the publish menu. The menu now shows the pull request status and a merge option.
+
+    Click **Merge and publish**. The editor merges the pull request, switches you back to your deployment branch, and Mintlify begins building and deploying your changes. Your live site updates in approximately 30 seconds to a few minutes.
+  </Step>
+
+</Steps>

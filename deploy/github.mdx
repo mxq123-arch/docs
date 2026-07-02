@@ -1,0 +1,148 @@
+---
+title: "Connect GitHub to Mintlify for Auto-Deployments"
+sidebarTitle: "GitHub"
+description: "Link your GitHub repository to Mintlify so every push automatically rebuilds your docs, generates PR previews, and keeps your site in sync."
+---
+
+Mintlify uses a GitHub App to sync your documentation with your GitHub repository. Once connected, every push to your configured branch triggers a new deployment automatically, and pull requests receive preview builds so you can review changes before they go live.
+
+## Do you need the GitHub App?
+
+Whether you need to install the GitHub App depends on where your repository lives:
+
+- **Mintlify-hosted repository** (in the `mintlify-community` organization): No. The GitHub App is already configured and managed by Mintlify.
+- **Your own repository**: Yes. You must install the GitHub App to enable automatic deployments when you push changes.
+
+Check which repository your docs use on the [Git Settings](https://app.mintlify.com/settings/deployment/git-settings) page of your dashboard.
+
+## Clone to your own repository
+
+If you skipped connecting your own Git repository during onboarding, your documentation lives in a private repository owned by the Mintlify organization. To move it to your own GitHub account or organization, go to [Git Settings](https://app.mintlify.com/settings/deployment/git-settings) in your dashboard. A setup wizard guides you through the process with two options.
+
+### Clone option
+
+The clone option automatically creates a copy of your documentation in your GitHub account.
+
+<Steps>
+  <Step title="Select your provider">
+    Select **GitHub** as your provider.
+  </Step>
+  <Step title="Start the clone">
+    Click **Clone** and authorize with GitHub when prompted.
+  </Step>
+  <Step title="Choose a destination">
+    Select the GitHub organization where you want to create the repository.
+  </Step>
+  <Step title="Confirm the clone">
+    Confirm the clone. Mintlify copies your documentation files into a new repository.
+  </Step>
+  <Step title="Install the GitHub App">
+    Optionally install the Mintlify GitHub App for automatic deployments.
+  </Step>
+</Steps>
+
+<Warning>
+  This process permanently deletes your content from the Mintlify-hosted repository. Download your documentation from the setup wizard before completing this step.
+</Warning>
+
+### Manual option
+
+If you prefer to configure your repository manually:
+
+<Steps>
+  <Step title="Download a backup">
+    Download your documentation as a zip file from the setup wizard so you have a backup of your files.
+  </Step>
+  <Step title="Select your provider">
+    Select **GitHub** as your provider, then click **Continue setup**.
+  </Step>
+  <Step title="Authorize with GitHub">
+    Authorize with GitHub when prompted.
+  </Step>
+  <Step title="Configure your repository">
+    Select your organization, repository, and branch. Optionally specify a subdirectory if your docs are not at the repository root.
+  </Step>
+  <Step title="Save your settings">
+    Click **Save** to apply your settings.
+  </Step>
+</Steps>
+
+After completing either path, follow the steps in [Install the GitHub App](#install-the-github-app) below.
+
+## Install the GitHub App
+
+You must have organization ownership or administrator permissions on a repository to install the app. If you lack the necessary permissions, the repository owner must approve your installation request.
+
+Install the Mintlify GitHub App from your [dashboard](https://app.mintlify.com/settings/organization/github-app). Select the repositories you want to grant access to when prompted.
+
+## Permissions
+
+When you install the GitHub App, grant the following permissions so Mintlify can build and deploy your docs.
+
+| Permission | Access level | Purpose |
+|---|---|---|
+| `metadata` | Read | Basic repository information |
+| `checks` | Read and write | Create status checks on pull requests |
+| `code` | Read and write | Read file changes when you commit to your docs branch |
+| `deployments` | Read and write | Generate preview deployments for pull requests |
+| `pull requests` | Read and write | Create branches and pull requests from the web editor |
+
+The app only accesses repositories that you explicitly grant it access to. If you have branch protection rules enabled, the app cannot push directly to protected branches.
+
+## Manage repository access
+
+When installing the GitHub App, you can grant access to all of your repositories or only specific ones. Grant access only to your documentation repository and any repositories you want to provide as context for the agent or workflows. You can modify this selection at any time in your [GitHub App settings](https://github.com/apps/mintlify/installations/new).
+
+## Configure docs source
+
+Change the organization, repository, or branch that your documentation builds from in the [Git Settings](https://app.mintlify.com/settings/deployment/git-settings) section of your dashboard.
+
+## GitHub Enterprise with IP allowlists
+
+If your GitHub Enterprise Cloud organization has an IP allowlist enabled, add Mintlify's egress IP address to your allowlist so the GitHub App can reach your repository.
+
+Add the following IP address to your allowlist:
+
+```
+54.242.90.151
+```
+
+Follow [GitHub's documentation](https://docs.github.com/en/enterprise-cloud@latest/organizations/keeping-your-organization-secure/managing-security-settings-for-your-organization/managing-allowed-ip-addresses-for-your-organization) for step-by-step instructions on configuring your IP allowlist.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Deployment not triggering automatically">
+    If pushes to your repository don't trigger deployments, check the following:
+
+    **Verify the app is installed on the correct repository:**
+
+    1. Go to [GitHub App settings](https://app.mintlify.com/settings/organization/github-app) in your dashboard.
+    2. Confirm that your repository appears on the active app installations list.
+
+    **Ensure you're pushing to the correct branch:**
+
+    1. Go to [Git Settings](https://app.mintlify.com/settings/deployment/git-settings) in your dashboard.
+    2. Verify that the branch shown matches the branch you're pushing to.
+  </Accordion>
+
+  <Accordion title="GitHub App connection issues">
+    If you encounter problems with the GitHub App connection, resetting the connection resolves most issues.
+
+    1. In GitHub, go to [installations](https://github.com/settings/installations) and click **Configure** next to the Mintlify app. Scroll down and click **Uninstall**.
+    2. Go to [Authorized GitHub Apps](https://github.com/settings/apps/authorizations) and click **Revoke** next to the Mintlify app.
+    3. In your Mintlify dashboard, go to [Git Settings](https://app.mintlify.com/settings/deployment/git-settings) and reinstall the GitHub App.
+    4. Authorize your account in the [My Profile](https://app.mintlify.com/settings/account) section of your dashboard.
+  </Accordion>
+
+  <Accordion title="Feedback add-ons are unavailable">
+    The edit suggestions and raise issues feedback features are only available for public GitHub repositories. If these options are disabled in your dashboard, check your repository visibility.
+
+    If your repository is public and you still cannot enable these options, revalidate your Git settings:
+
+    1. Go to [Git Settings](https://app.mintlify.com/settings/deployment/git-settings) in your dashboard.
+    2. Click the green check mark in the corner of the Git settings box to revalidate your repository settings.
+
+    This forces an update to reflect whether your repository is public or private.
+  </Accordion>
+</AccordionGroup>

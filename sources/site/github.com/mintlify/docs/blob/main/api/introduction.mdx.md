@@ -1,0 +1,176 @@
+# Source: https://github.com/mintlify/docs/blob/main/api/introduction.mdx
+
+### Uh oh!
+
+There was an error while loading. [Please reload this page]().
+
+[mintlify](https://github.com/mintlify) / **[docs](https://github.com/mintlify/docs)** Public
+
+- [Notifications](https://github.com/login?return_to=%2Fmintlify%2Fdocs) You must be signed in to change notification settings
+- [Fork 236](https://github.com/login?return_to=%2Fmintlify%2Fdocs)
+- [Star 415](https://github.com/login?return_to=%2Fmintlify%2Fdocs)
+ 
+
+ 
+
+## FilesExpand file tree
+
+ main
+
+/
+
+# introduction.mdx
+
+Copy path
+
+Blame
+
+More file actions
+
+Blame
+
+More file actions
+
+## Latest commit
+
+![mintlify[bot]](https://avatars.githubusercontent.com/in/222410?v=4&size=40)![ethanpalm](https://avatars.githubusercontent.com/u/56270045?v=4&size=40)
+
+[mintlify\[bot\]](https://github.com/mintlify/docs/commits?author=mintlify%5Bbot%5D)
+
+and
+
+[ethanpalm](https://github.com/mintlify/docs/commits?author=ethanpalm)
+
+[docs: address user feedback on API intro clarity and code groups (](https://github.com/mintlify/docs/commit/de115918868fbfa0bf51c65c9946d46a2c3c83db) [#6332](https://github.com/mintlify/docs/pull/6332) [)](https://github.com/mintlify/docs/commit/de115918868fbfa0bf51c65c9946d46a2c3c83db)
+
+Open commit detailssuccess
+
+Jul 1, 2026
+
+[de11591](https://github.com/mintlify/docs/commit/de115918868fbfa0bf51c65c9946d46a2c3c83db) · Jul 1, 2026
+
+## History
+
+[History](https://github.com/mintlify/docs/commits/main/api/introduction.mdx)
+
+Open commit details
+
+History
+
+91 lines (69 loc) · 6.32 KB
+
+## FilesExpand file tree
+
+ main
+
+/
+
+# introduction.mdx
+
+Copy path
+
+Top
+
+## File metadata and controls
+
+- Preview
+ 
+- Code
+ 
+- Blame
+ 
+
+91 lines (69 loc) · 6.32 KB
+
+[Raw](https://github.com/mintlify/docs/raw/refs/heads/main/api/introduction.mdx)
+
+Copy raw file
+
+Download raw file
+
+Outline
+
+Edit and raw actions
+
+<table><tbody><tr><th>title</th><td>Mintlify REST API introduction</td></tr><tr><th>description</th><td>Use the Mintlify REST API to trigger deployments, embed an AI assistant, export analytics data, and manage documentation programmatically.</td></tr><tr><th>keywords</th><td><table><tbody><tr><th><div dir="auto">REST API</div></th><th><div dir="auto">endpoints</div></th><th><div dir="auto">API keys</div></th></tr></tbody></table></td></tr><tr><th>boost</th><td>3</td></tr></tbody></table>
+
+The Mintlify REST (Representational State Transfer) API enables you to programmatically interact with your documentation, trigger updates, embed AI-powered chat experiences, and export analytics data.
+
+## Endpoints
+
+- [Trigger update](https://github.com/mintlify/docs/blob/main/api/update/trigger): Trigger an update of your site when desired.
+- [Get update status](https://github.com/mintlify/docs/blob/main/api/update/status): Get the status of an update and other details about your docs.
+- [Trigger preview deployment](https://github.com/mintlify/docs/blob/main/api/preview/trigger): Create or update a preview deployment for a specific branch.
+- [Create agent job](https://github.com/mintlify/docs/blob/main/api/agent/v2/create-agent-job): Create an agent job to automatically edit your documentation.
+- [Get agent job](https://github.com/mintlify/docs/blob/main/api/agent/v2/get-agent-job): Retrieve the details and status of a specific agent job.
+- [Send follow-up message](https://github.com/mintlify/docs/blob/main/api/agent/v2/send-message): Send a follow-up message to an existing agent job.
+- [Create assistant message](https://github.com/mintlify/docs/blob/main/api/assistant/create-assistant-message-v2): Embed the assistant, trained on your docs, into any application of your choosing.
+- [Search documentation](https://github.com/mintlify/docs/blob/main/api/assistant/search): Search through your documentation.
+- [Get page content](https://github.com/mintlify/docs/blob/main/api/assistant/get-page-content): Retrieve the full text content of a documentation page.
+- [Get user feedback](https://github.com/mintlify/docs/blob/main/api/analytics/feedback): Export user feedback from your documentation.
+- [Get feedback by page](https://github.com/mintlify/docs/blob/main/api/analytics/feedback-by-page): Export feedback counts aggregated by page.
+- [Get assistant conversations](https://github.com/mintlify/docs/blob/main/api/analytics/assistant-conversations): Export AI assistant conversation history.
+- [Get assistant caller stats](https://github.com/mintlify/docs/blob/main/api/analytics/assistant-caller-stats): Retrieve a breakdown of assistant query counts by caller type.
+- [Get search queries](https://github.com/mintlify/docs/blob/main/api/analytics/searches): Export documentation search terms and analytics.
+- [Get page views](https://github.com/mintlify/docs/blob/main/api/analytics/views): Export per-page and site-wide content view counts.
+- [Get unique visitors](https://github.com/mintlify/docs/blob/main/api/analytics/visitors): Export per-page and site-wide unique visitor counts.
+
+### Common use cases
+
+- **Automated deployments**: Trigger site updates at set intervals or when events occur with [Trigger update](https://github.com/mintlify/docs/blob/main/api/update/trigger) and [Get update status](https://github.com/mintlify/docs/blob/main/api/update/status).
+- **CI/CD integration**: Update documentation as part of your deployment pipeline when code changes with [Trigger update](https://github.com/mintlify/docs/blob/main/api/update/trigger).
+- **Preview deployments**: Create or update preview deployments programmatically in your CI/CD pipeline with [Trigger preview deployment](https://github.com/mintlify/docs/blob/main/api/preview/trigger).
+- **Custom integrations**: Embed the AI assistant into your product, support portal, or internal tools with [Create assistant message](https://github.com/mintlify/docs/blob/main/api/assistant/create-assistant-message-v2), [Search documentation](https://github.com/mintlify/docs/blob/main/api/assistant/search), and [Get page content](https://github.com/mintlify/docs/blob/main/api/assistant/get-page-content).
+- **Automated editing**: Use agent jobs to programmatically update documentation at scale with [Create agent job](https://github.com/mintlify/docs/blob/main/api/agent/v2/create-agent-job), [Get agent job](https://github.com/mintlify/docs/blob/main/api/agent/v2/get-agent-job), and [Send follow-up message](https://github.com/mintlify/docs/blob/main/api/agent/v2/send-message).
+- **Analytics export**: Export feedback, assistant conversations, search analytics, page views, and visitor data for external analysis with [Get user feedback](https://github.com/mintlify/docs/blob/main/api/analytics/feedback), [Get feedback by page](https://github.com/mintlify/docs/blob/main/api/analytics/feedback-by-page), [Get assistant conversations](https://github.com/mintlify/docs/blob/main/api/analytics/assistant-conversations), [Get assistant caller stats](https://github.com/mintlify/docs/blob/main/api/analytics/assistant-caller-stats), [Get search queries](https://github.com/mintlify/docs/blob/main/api/analytics/searches), [Get page views](https://github.com/mintlify/docs/blob/main/api/analytics/views), and [Get unique visitors](https://github.com/mintlify/docs/blob/main/api/analytics/visitors).
+
+## Authentication
+
+Generate API keys on the [API keys page](https://app.mintlify.com/settings/organization/api-keys) in your dashboard. Each API key belongs to an organization--you can use keys across multiple deployments within the same organization.
+
+You can create up to 10 API keys per hour per organization.
+
+Mintlify uses two types of API keys, each scoped to a different set of endpoints:
+
+| Key type | Prefix | Use for |
+| --- | --- | --- |
+| Admin API key | `mint_` | Updates, agent jobs, and analytics exports. Server-side only. |
+| Assistant API key | `mint_dsc_` | Assistant endpoints (create message, search, get page content). Proxy in production. |
+
+### Admin API key
+
+Use the admin API key for deployment, triggering the agent, and analytics endpoints.
+
+- [Trigger update](https://github.com/mintlify/docs/blob/main/api/update/trigger)
+- [Get update status](https://github.com/mintlify/docs/blob/main/api/update/status)
+- [Trigger preview deployment](https://github.com/mintlify/docs/blob/main/api/preview/trigger)
+- [Create agent job](https://github.com/mintlify/docs/blob/main/api/agent/v2/create-agent-job)
+- [Get agent job](https://github.com/mintlify/docs/blob/main/api/agent/v2/get-agent-job)
+- [Send follow-up message](https://github.com/mintlify/docs/blob/main/api/agent/v2/send-message)
+- [Get user feedback](https://github.com/mintlify/docs/blob/main/api/analytics/feedback)
+- [Get feedback by page](https://github.com/mintlify/docs/blob/main/api/analytics/feedback-by-page)
+- [Get assistant conversations](https://github.com/mintlify/docs/blob/main/api/analytics/assistant-conversations)
+- [Get assistant caller stats](https://github.com/mintlify/docs/blob/main/api/analytics/assistant-caller-stats)
+- [Get search queries](https://github.com/mintlify/docs/blob/main/api/analytics/searches)
+- [Get page views](https://github.com/mintlify/docs/blob/main/api/analytics/views)
+- [Get unique visitors](https://github.com/mintlify/docs/blob/main/api/analytics/visitors)
+
+Admin API keys begin with the `mint_` prefix.
+
+The admin API key is a server-side secret. Do not expose it in client-side code.
+
+### Assistant API key
+
+Do not directly embed the assistant API key in client-side code. Any visitor who extracts the key can send requests on your behalf, consuming credits and potentially triggering overage charges.
+
+For production deployments, proxy assistant API requests through your own backend and store the key as a server-side environment variable. Routing requests through a proxy also lets you add rate limiting, authentication, and bot protection to prevent abuse.
+
+Use the assistant API key for the assistant endpoints.
+
+- [Create assistant message](https://github.com/mintlify/docs/blob/main/api/assistant/create-assistant-message-v2)
+- [Search documentation](https://github.com/mintlify/docs/blob/main/api/assistant/search)
+- [Get page content](https://github.com/mintlify/docs/blob/main/api/assistant/get-page-content)
+
+Assistant API keys begin with the `mint_dsc_` prefix.
+
+Calls using the assistant API token can incur costs: either using your assistant credits or incurring overages.

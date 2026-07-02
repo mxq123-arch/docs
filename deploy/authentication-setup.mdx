@@ -1,0 +1,379 @@
+---
+title: "Protect Your Docs with Authentication"
+sidebarTitle: "Authentication"
+description: "Control who can access your documentation by configuring password, OAuth 2.0, JWT, or Mintlify Auth to protect pages or your entire site."
+---
+
+Authentication requires users to log in before accessing your content. You can protect your entire documentation site or configure partial authentication where some pages are public and others require a login. Mintlify supports four authentication methods: Password, Mintlify Auth, OAuth 2.0, and JWT — each suited to different access control needs.
+
+<Note>
+  Mintlify Auth is available on all plans. Password, OAuth 2.0, and JWT authentication require an [Enterprise plan](https://mintlify.com/pricing?ref=authentication).
+</Note>
+
+<Warning>
+  Authentication is only supported for sites hosted on a custom domain (for example, `docs.example.com`) or a Mintlify subdomain (for example, `example.mintlify.site`). Authentication is **not supported** for sites using a custom subpath such as `example.com/docs`.
+</Warning>
+
+## Configure authentication
+
+Choose the handshake method that fits your access control requirements, then follow the setup steps for that method.
+
+<Tabs>
+  <Tab title="Password">
+    Password authentication provides basic access control using a shared password. It does **not** support user-specific features such as group-based access control or API playground pre-filling.
+
+    ### Prerequisites
+
+    - Your security requirements allow sharing a single password among all authorized users.
+
+    ### Setup
+
+    1. In your dashboard, go to [Authentication](https://app.mintlify.com/products/authentication).
+    2. In the **Authentication method** section, set site visibility to **Private**.
+    3. Click **Password**.
+    4. Enter a secure password.
+    5. Click **Save changes**.
+
+    After you save, your site redeploys. Once the deployment finishes, anyone who visits your site must enter the password to access your content.
+
+    ### Example
+
+    You host your documentation at `docs.foo.com` and need basic access control without tracking individual users.
+
+    1. **Create a strong password** in your dashboard.
+    2. **Share the password and documentation URL** securely with authorized users.
+  </Tab>
+
+  <Tab title="Mintlify Auth">
+    Mintlify Auth lets members of your Mintlify organization log in with their existing Mintlify credentials. This is the simplest option when your entire audience already has dashboard access.
+
+    ### Prerequisites
+
+    - Everyone who needs to access your documentation must be a member of your Mintlify organization.
+
+    ### Setup
+
+    1. In your dashboard, go to [Authentication](https://app.mintlify.com/products/authentication).
+    2. In the **Authentication method** section, set site visibility to **Private**.
+    3. Click **Authenticated**.
+    4. Click **Save changes**.
+
+    After you save, your site redeploys. Once the deployment finishes, anyone who visits your site must log in to your Mintlify organization to access your content.
+
+    To grant access to additional people:
+
+    1. In your dashboard, go to [Members](https://app.mintlify.com/settings/organization/members).
+    2. Add each person who should have access.
+    3. Assign appropriate roles based on their editing permissions.
+
+    ### Example
+
+    You host documentation at `docs.foo.com` and your entire team already has dashboard access.
+
+    1. **Enable Mintlify Auth** in your dashboard settings.
+    2. **Verify team access** by confirming all team members are active in your organization.
+  </Tab>
+
+  <Tab title="OAuth 2.0">
+    OAuth 2.0 authentication delegates login to your own OAuth or OIDC server. This supports group-based access control when you provide a user info endpoint.
+
+    ### Prerequisites
+
+    - An OAuth or OIDC server that supports the Authorization Code Flow.
+    - The ability to create an API endpoint accessible by OAuth access tokens (optional, required for group-based access control).
+
+    ### Setup
+
+    1. In your dashboard, go to [Authentication](https://app.mintlify.com/products/authentication).
+    2. In the **Authentication method** section, set site visibility to **Private**.
+    3. Click **Custom**, then click **OAuth**.
+    4. Configure the following fields and click **Save changes**.
+
+    ### Configuration fields
+
+    | Field | Required | Description |
+    |---|---|---|
+    | **Authorization URL** | Yes | Your OAuth authorization endpoint |
+    | **Client ID** | Yes | Your OAuth 2.0 client identifier |
+    | **Client Secret** | Yes | Your OAuth 2.0 client secret |
+    | **Scopes** | No | Permissions to request. Copy the complete scope string (for example, `provider.users.docs`) |
+    | **Additional authorization parameters** | No | Extra query parameters to append to the initial authorization request |
+    | **Token URL** | Yes | Your OAuth token exchange endpoint |
+    | **Info API URL** | No | Endpoint Mintlify calls to retrieve user info. Required for group-based access control |
+    | **Logout URL** | No | Your OAuth provider's native logout URL. Mintlify issues a `GET` redirect and does not append query parameters, so include any parameters (for example, `returnTo`) directly in the URL |
+    | **Redirect URL** | No | The URL to redirect users to after authentication |
+
+    After saving, copy the **Redirect URL** from your authentication settings and add it as an authorized redirect URL on your OAuth server.
+
+    To enable group-based access control, create an API endpoint that:
+    - Responds to `GET` requests
+    - Accepts an `Authorization: Bearer <token>` header
+    - Returns user data in the `User` format (see [User data format](#user-data-format))
+
+    Add this endpoint URL to the **Info API URL** field in your authentication settings.
+
+    ### Example
+
+    You host documentation at `docs.foo.com` with an OAuth server at `auth.foo.com`.
+
+    **Configure your OAuth server details** in your dashboard:
+
+    - **Authorization URL**: `https://auth.foo.com/authorization`
+    - **Client ID**: `ydybo4SD8PR73vzWWd6S0ObH`
+    - **Scopes**: `provider.users.docs`
+    - **Token URL**: `https://auth.foo.com/exchange`
+    - **Info API URL**: `https://api.foo.com/docs/user-info`
+    - **Logout URL**: `https://auth.foo.com/logout?returnTo=https%3A%2F%2Fdocs.foo.com`
+
+    **Create a user info endpoint** at `api.foo.com/docs/user-info` that accepts an OAuth access token and returns:
+
+    ```json
+    {
+      "groups": ["engineering", "admin"],
+      "expiresAt": 1735689600,
+      "apiPlaygroundInputs": {
+        "header": {
+          "Authorization": "Bearer user_abc123"
+        }
+      }
+    }
+    ```
+
+    Use the `expiresAt` field (a Unix timestamp in seconds) to control session length.
+  </Tab>
+
+  <Tab title="JWT">
+    JWT authentication integrates with your existing login system. Your backend generates a signed JWT after authentication and redirects the user to your docs with the token.
+
+    ### Prerequisites
+
+    - An authentication system that can generate and sign JWTs.
+    - A backend service that can create redirect URLs.
+
+    ### Setup
+
+    1. In your dashboard, go to [Authentication](https://app.mintlify.com/products/authentication).
+    2. In the **Authentication method** section, set site visibility to **Private**.
+    3. Click **Custom**, then click **JWT**.
+    4. Enter the URL of your existing login flow.
+    5. Click **Save changes**.
+    6. Click **Generate new key** and store your private key securely where your backend can access it.
+
+    After generating a private key, your site redeploys. Once the deployment finishes, visitors must authenticate through your JWT system.
+
+    Modify your existing login flow to perform these steps after user authentication:
+
+    1. Create a JWT containing the authenticated user's info in the `User` format (see [User data format](#user-data-format)).
+    2. Sign the JWT with your private key using the EdDSA algorithm. Set the JWT `exp` claim to a short duration (10 seconds or less).
+    3. Redirect to the `/login/jwt-callback` path of your docs with the signed JWT as the URL hash.
+
+    ### JWT User type
+
+    ```ts
+    type User = {
+      host?: string;
+      expiresAt?: number;
+      groups?: string[];
+      content?: Record<string, unknown>;
+      apiPlaygroundInputs?: {
+        server?: Record<string, string>;
+        header?: Record<string, string>;
+        query?: Record<string, string>;
+        cookie?: Record<string, string>;
+        path?: Record<string, string>;
+      };
+    };
+    ```
+
+    ### Example
+
+    You host documentation at `docs.foo.com` with an existing auth system at `foo.com`. Create a login endpoint at `https://foo.com/docs-login` that extends your existing authentication.
+
+    After verifying user credentials, generate a signed JWT and redirect to your docs:
+
+    <CodeGroup>
+      ```ts TypeScript
+      import * as jose from 'jose';
+      import { Request, Response } from 'express';
+
+      const TWO_WEEKS_IN_MS = 1000 * 60 * 60 * 24 * 7 * 2;
+      const DOCS_HOST = 'docs.example.com';
+
+      const signingKey = await jose.importPKCS8(process.env.MINTLIFY_PRIVATE_KEY, 'EdDSA');
+
+      export async function handleRequest(req: Request, res: Response) {
+        const user = {
+          host: DOCS_HOST,
+          expiresAt: Math.floor((Date.now() + TWO_WEEKS_IN_MS) / 1000),
+          groups: res.locals.user.groups,
+          apiPlaygroundInputs: {
+            header: {
+              Authorization: `Bearer ${res.locals.user.apiKey}`,
+            },
+          },
+        };
+
+        const jwt = await new jose.SignJWT(user)
+          .setProtectedHeader({ alg: 'EdDSA' })
+          .setExpirationTime('10 s')
+          .sign(signingKey);
+
+        return res.redirect(`https://${DOCS_HOST}/login/jwt-callback#${jwt}`);
+      }
+      ```
+
+      ```python Python
+      import jwt  # pyjwt
+      import os
+      from datetime import datetime, timedelta
+      from fastapi.responses import RedirectResponse
+
+      private_key = os.getenv(MINTLIFY_JWT_PEM_SECRET_NAME, '')
+      DOCS_HOST = 'docs.example.com'
+
+      @router.get('/auth')
+      async def return_mintlify_auth_status(current_user):
+          jwt_token = jwt.encode(
+              payload={
+                  'host': DOCS_HOST,
+                  'exp': int((datetime.now() + timedelta(seconds=10)).timestamp()),
+                  'expiresAt': int((datetime.now() + timedelta(weeks=2)).timestamp()),
+                  'groups': ['admin'] if current_user.is_admin else [],
+                  'apiPlaygroundInputs': {
+                      'header': {
+                          'Authorization': f'Bearer {current_user.api_key}',
+                      },
+                  },
+              },
+              key=private_key,
+              algorithm='EdDSA'
+          )
+
+          return RedirectResponse(
+              url=f'https://{DOCS_HOST}/login/jwt-callback#{jwt_token}',
+              status_code=302
+          )
+      ```
+    </CodeGroup>
+
+    **Redirect unauthenticated users:** When a visitor tries to access a protected page, Mintlify preserves their intended destination through the redirect flow:
+
+    1. User visits `https://docs.foo.com/quickstart`.
+    2. Mintlify redirects to `https://foo.com/docs-login?redirect=%2Fquickstart`.
+    3. After authentication, your backend redirects to `https://docs.foo.com/login/jwt-callback?redirect=%2Fquickstart#{SIGNED_JWT}`.
+    4. The user lands on their originally requested page.
+  </Tab>
+</Tabs>
+
+## Make pages public
+
+When authentication is enabled, all pages require a login by default. You can make specific pages viewable without authentication at the individual page or group level.
+
+### Individual pages
+
+Add `public: true` to a page's frontmatter to make it accessible without authentication:
+
+```mdx
+---
+title: "Public page"
+public: true
+---
+```
+
+### Groups of pages
+
+To make all pages in a navigation group public, add `"public": true` beneath the group's name in the `navigation` object of your `docs.json`:
+
+```json
+{
+  "navigation": {
+    "groups": [
+      {
+        "group": "Public group",
+        "public": true,
+        "icon": "play",
+        "pages": [
+          "quickstart",
+          "installation",
+          "settings"
+        ]
+      },
+      {
+        "group": "Private group",
+        "icon": "pause",
+        "pages": [
+          "private-information",
+          "secret-settings"
+        ]
+      }
+    ]
+  }
+}
+```
+
+## Control access with groups
+
+When you use OAuth 2.0 or JWT authentication, you can restrict specific pages to certain user groups. This lets you show different content based on a user's role or attributes.
+
+Groups are passed as part of the user data during authentication. See [User data format](#user-data-format) for details on the data structure.
+
+Specify which groups can access a page using the `groups` property in the page's frontmatter:
+
+```mdx
+---
+title: "Admin dashboard"
+groups: ["admin"]
+---
+```
+
+Users must belong to at least one of the listed groups to access the page. If a user tries to access a page without the required group membership, they receive a 404 error.
+
+### How groups interact with public pages
+
+- All pages require authentication by default.
+- Pages with a `groups` property are only accessible to authenticated users in those groups.
+- Pages without a `groups` property are accessible to all authenticated users.
+- Pages with `public: true` and no `groups` property are accessible to everyone.
+
+## User data format
+
+When using OAuth 2.0 or JWT authentication, your system returns user data that controls session length, group membership, and content personalization.
+
+```ts
+type User = {
+  host?: string;
+  expiresAt?: number;
+  groups?: string[];
+  content?: Record<string, unknown>;
+  apiPlaygroundInputs?: {
+    server?: Record<string, string>;
+    header?: Record<string, string>;
+    query?: Record<string, string>;
+    cookie?: Record<string, string>;
+    path?: Record<string, string>;
+  };
+};
+```
+
+| Field | Description |
+|---|---|
+| `host` | **Required for JWT.** The hostname of your docs site (for example, `docs.example.com`). Mintlify validates this against the requesting host to prevent token reuse across sites. |
+| `expiresAt` | Session expiration as a Unix timestamp (seconds since epoch). When the current time passes this value, the user must re-authenticate. For JWT, set this separately from the JWT `exp` claim — use `exp` for a short window (10 seconds or less) and `expiresAt` for the actual session length (hours to weeks). |
+| `groups` | List of groups the user belongs to. Pages with matching `groups` in their frontmatter are accessible to this user. |
+| `content` | Custom data accessible in MDX pages via the `user` variable for personalized content. |
+| `apiPlaygroundInputs.header` | Header values to pre-fill in the API playground, keyed by header name. |
+| `apiPlaygroundInputs.query` | Query parameter values to pre-fill, keyed by parameter name. |
+| `apiPlaygroundInputs.cookie` | Cookie values to pre-fill, keyed by cookie name. |
+| `apiPlaygroundInputs.server` | Server variable values to pre-fill, keyed by variable name. |
+| `apiPlaygroundInputs.path` | Path parameter values to pre-fill, keyed by parameter name. |
+
+## Feature availability
+
+Some Mintlify features behave differently or are unavailable when authentication is enabled.
+
+| Feature | Public | Fully authenticated | Partially authenticated |
+|---|---|---|---|
+| llms.txt and llms-full.txt | Full support | Available behind authentication; AI tools may not be able to access the files | Publicly accessible, reflecting public pages only |
+| MCP server | Full support | Requires authentication to connect | Available without authentication for public pages; authentication required for protected pages |
+| Search | Full support | Full support, respects user groups | Full support, respects user groups |
+| Assistant | Full support | Full support, respects user groups | Full support, respects user groups |

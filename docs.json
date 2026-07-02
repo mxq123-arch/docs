@@ -1,72 +1,130 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mintlify Starter Kit",
-  "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+  "name": "Mintlify",
+  "theme": "luma",
+  "logo": {
+    "light": "https://media.brand.dev/5ffd6ce4-2434-4b4b-920a-f8cacac8b48b.svg",
+    "dark": "https://media.brand.dev/5ffd6ce4-2434-4b4b-920a-f8cacac8b48b.svg"
   },
   "favicon": "/favicon.svg",
-  "navigation": {
-    "pages": [
-      {
-        "group": "Getting Started",
-        "pages": [
-          "index",
-          "quickstart"
-        ]
-      }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
-  },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+  "colors": {
+    "primary": "#848c8e",
+    "light": "#11161e",
+    "dark": "#cfd0d2"
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
     "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://app.mintlify.com"
+      "type": "github",
+      "href": "https://github.com/mintlify/docs"
     }
   },
-  "contextual": {
-    "options": [
-      "copy",
-      "view",
-      "chatgpt",
-      "claude",
-      "perplexity",
-      "mcp",
-      "cursor",
-      "vscode"
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "cli/install",
+              "cli/commands"
+            ]
+          },
+          {
+            "group": "Web Editor",
+            "pages": [
+              "editor/overview",
+              "editor/tutorial",
+              "editor/branching-and-publishing",
+              "editor/navigation"
+            ]
+          },
+          {
+            "group": "Writing Content",
+            "pages": [
+              "create/text",
+              "create/code",
+              "create/reusable-snippets",
+              "components/overview"
+            ]
+          },
+          {
+            "group": "AI Features",
+            "pages": [
+              "ai/overview",
+              "agent/overview",
+              "agent/integrations",
+              "agent/use-cases",
+              "agent/customize",
+              "automations/overview"
+            ]
+          },
+          {
+            "group": "Deploy & Configure",
+            "pages": [
+              "deploy/github",
+              "deploy/deployments",
+              "deploy/authentication-setup",
+              "customize/themes",
+              "customize/custom-domain",
+              "customize/fonts"
+            ]
+          },
+          {
+            "group": "Dashboard",
+            "pages": [
+              "dashboard/roles",
+              "dashboard/permissions",
+              "dashboard/sso"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "api/introduction"
+            ]
+          },
+          {
+            "group": "Deployments",
+            "pages": [
+              "api/update/trigger",
+              "api/update/status",
+              "api/preview/create"
+            ]
+          },
+          {
+            "group": "Agent",
+            "pages": [
+              "api/agent/create-job",
+              "api/agent/get-job",
+              "api/agent/send-message"
+            ]
+          },
+          {
+            "group": "Assistant",
+            "pages": [
+              "api/assistant/create-message",
+              "api/assistant/search",
+              "api/assistant/get-page"
+            ]
+          },
+          {
+            "group": "Analytics",
+            "pages": [
+              "api/analytics/feedback",
+              "api/analytics/search-queries",
+              "api/analytics/page-views"
+            ]
+          }
+        ]
+      }
     ]
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
   }
 }

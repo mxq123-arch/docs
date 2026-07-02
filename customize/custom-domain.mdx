@@ -1,0 +1,110 @@
+---
+title: "Host Your Docs on a Custom Domain"
+sidebarTitle: "Custom Domain"
+description: "Point a custom subdomain at your Mintlify docs with CNAME and TXT DNS records, and get a free TLS certificate provisioned automatically."
+---
+
+By default, your Mintlify documentation is accessible at an auto-generated subdomain. Hosting on a custom domain — such as `docs.yourcompany.com` — gives your docs a professional URL that matches your brand and improves SEO. Mintlify handles TLS certificate provisioning automatically once your DNS records are in place.
+
+<Steps>
+  <Step title="Add your domain in the dashboard">
+    Navigate to the [Custom domain setup](https://app.mintlify.com/settings/deployment/custom-domain) page in your dashboard. Enter your domain name (for example, `docs.example.com` or `www.example.com`) and click **Add domain**.
+  </Step>
+
+  <Step title="Create a CNAME record">
+    On your domain provider's DNS settings page, create a new CNAME record pointing your subdomain to Mintlify:
+
+    ```
+    CNAME | docs | cname.mintlify.builders
+    ```
+
+    Each domain provider has a different interface for adding DNS records. Refer to your provider's documentation for specific instructions.
+
+    <Warning>
+      Do not add or change your `CNAME` until both verification `TXT` records show as verified in your dashboard (indicated by a green check mark). Switching `CNAME` too early commonly breaks HTTPS until certificate provisioning finishes.
+    </Warning>
+  </Step>
+
+  <Step title="Add the verification TXT records">
+    After you add a custom domain, the dashboard displays two `TXT` records that you must create at your DNS provider:
+
+    ```
+    TXT | _acme-challenge.<your-domain> | <value shown in your dashboard>
+    TXT | _cf-custom-hostname.<your-domain> | <value shown in your dashboard>
+    ```
+
+    - The `_acme-challenge` record authorizes Let's Encrypt to issue a TLS certificate for your domain.
+    - The `_cf-custom-hostname` record verifies that you control the domain.
+
+    The dashboard polls DNS in the background and marks each record with a green check once it confirms the expected value. Allow a short time for propagation after saving your records.
+  </Step>
+
+  <Step title="Wait for DNS propagation and TLS provisioning">
+    DNS changes typically take 1–24 hours to propagate globally, though in rare cases it can take up to 48 hours. Use a tool like [DNSChecker](https://dnschecker.org) to verify your records are resolving correctly.
+
+    Once your DNS records resolve, your documentation is first accessible over HTTP. Mintlify provisions a free TLS certificate via Let's Encrypt automatically, and HTTPS becomes available once the certificate is issued — typically within a few hours. Certificates are renewed automatically before expiration.
+  </Step>
+</Steps>
+
+<Tip>
+  For zero-downtime migration of an existing domain, publish the verification `TXT` records first and wait until they show as verified and TLS has pre-provisioned before pointing your `CNAME` at Mintlify.
+</Tip>
+
+## Cloudflare-proxied domains
+
+If your domain is already proxied through Cloudflare (the proxy status shows an orange cloud icon), the standard pre-validation flow does not work. Cloudflare's proxy prevents the `TXT` records from showing as verified until traffic for the hostname already routes to Mintlify.
+
+For Cloudflare-proxied domains, follow these steps instead:
+
+1. Add the verification `TXT` records at your DNS provider.
+2. Update your `CNAME` record to point to `cname.mintlify.builders` **without** waiting for the `TXT` records to show as verified.
+3. Wait for verification and TLS provisioning to complete. Your site may briefly serve an invalid certificate during provisioning.
+
+If you need zero downtime during migration, set the `CNAME` record's proxy status to **DNS only** (gray cloud) temporarily. This allows the standard pre-validation flow to complete before you switch traffic.
+
+### Cloudflare SSL/TLS settings
+
+If Cloudflare is your DNS provider, you must configure two additional settings:
+
+- Set the **SSL/TLS encryption mode** to **Full (strict)**.
+- Disable **Always Use HTTPS** in your Edge Certificates settings. Cloudflare's automatic HTTPS redirect blocks Let's Encrypt from validating your domain during certificate provisioning.
+
+## Set a canonical URL
+
+After your domain is live, set a canonical URL in your `docs.json` so search engines index your preferred domain and avoid duplicate content issues:
+
+```json
+{
+  "seo": {
+    "metatags": {
+      "canonical": "https://docs.yourcompany.com"
+    }
+  }
+}
+```
+
+Replace `https://docs.yourcompany.com` with your actual custom domain.
+
+## Retry validation
+
+If your domain remains pending after you add the verification `TXT` records, you can retry validation manually:
+
+1. Navigate to the [Custom domain setup](https://app.mintlify.com/settings/deployment/custom-domain) page in your dashboard.
+2. Find your pending custom domain.
+3. Click **Retry validation**.
+
+Only retry after confirming your DNS records are correct. Repeated retries with incorrect records do not speed up the validation process.
+
+## CAA records
+
+If your domain uses CAA (Certification Authority Authorization) records, you must explicitly authorize Let's Encrypt to issue certificates. Add the following CAA record to your DNS settings:
+
+```
+0 issue "letsencrypt.org"
+```
+
+Without this record, certificate provisioning will fail if your domain has existing CAA restrictions.
+
+<Note>
+  Mintlify reserves the `/.well-known/acme-challenge` path for certificate validation. Do not configure redirects or rewrites for this path. If you have existing rules that affect this path, certificate provisioning will fail.
+</Note>

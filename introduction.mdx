@@ -1,0 +1,46 @@
+---
+title: "Mintlify: AI-Native Documentation Platform"
+sidebarTitle: "Introduction"
+description: "Mintlify hosts your docs site from a Git repository, with built-in AI features, an interactive API playground, and automatic deployments on every push."
+---
+
+Mintlify is an AI-native documentation platform that builds and hosts your documentation site directly from a Git repository. Every page on your site corresponds to an MDX file stored in your repository — when you push a change, Mintlify automatically builds and deploys your site. You can write content locally using the CLI, or edit directly in the browser using the web editor, and switch between both workflows freely.
+
+## What you can do with Mintlify
+
+<CardGroup cols={2}>
+  <Card title="Web Editor" icon="pen-to-square" href="/editor/overview">
+    Edit and publish pages in your browser without touching the command line. Changes commit back to your Git repository automatically.
+  </Card>
+  <Card title="AI Features" icon="sparkles" href="/ai/overview">
+    Give users a conversational assistant, and let AI agents generate and maintain content through automations and pull requests.
+  </Card>
+  <Card title="API Playground" icon="code" href="/api/introduction">
+    Render interactive API references from OpenAPI specs so developers can explore and test your API directly in the docs.
+  </Card>
+  <Card title="CLI" icon="terminal" href="/cli/install">
+    Preview your docs locally, run quality checks, and manage automations from the command line with the `mint` CLI.
+  </Card>
+  <Card title="Themes & Customization" icon="palette" href="/customize/themes">
+    Choose a theme, set your brand colors, and configure navigation, custom domains, and more from your `docs.json` file.
+  </Card>
+  <Card title="Team & Roles" icon="users" href="/dashboard/roles">
+    Invite collaborators, assign roles, and control access so the right people can edit, review, and publish content.
+  </Card>
+</CardGroup>
+
+## How Mintlify works
+
+Mintlify uses a docs-as-code model. Your content lives in a Git repository as MDX files alongside a `docs.json` configuration file that controls your site's navigation, theme, and settings. You can use your own GitHub or GitLab repository, or let Mintlify create one for you during onboarding.
+
+When you connect your repository, Mintlify installs a webhook that triggers a build every time you push to the default branch. Deployments are fast — changes typically go live within seconds. Your site is served at a `.mintlify.site` URL by default, and you can point a custom domain to it whenever you're ready.
+
+The Mintlify dashboard ties everything together. Use it to monitor deployments, manage your team, adjust settings, and access the web editor — all without leaving the browser.
+
+<Note>
+  Multiple team members can work in either the web editor or a local editor at the same time. Git branches let you manage parallel changes so nothing conflicts before it ships.
+</Note>
+
+## AI-native by design
+
+Mintlify is built for both human readers and AI agents. The platform generates `llms.txt` and `llms-full.txt` files automatically so AI agents can index and consume your content efficiently. A built-in assistant lets your users ask questions and get cited answers sourced directly from your documentation. The AI agent helps your team keep content up to date by generating pull requests from scheduled automations, incoming code changes, or Slack threads.

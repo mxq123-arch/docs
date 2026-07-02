@@ -1,0 +1,64 @@
+---
+title: "POST /agent/jobs/{jobId}/messages — Send Follow-up"
+sidebarTitle: "Send Message"
+description: "POST /agent/jobs/{jobId}/messages — Send a follow-up message to an active agent job to refine or extend the proposed documentation changes."
+---
+
+Use this endpoint to send a follow-up instruction to an agent job after reviewing its initial output. This lets you iterate on the agent's proposed changes without creating a new job — for example, asking it to expand a section, fix inaccurate content, or adjust the tone of the drafted documentation.
+
+## Authentication
+
+This endpoint requires an **Admin API key** (`mint_` prefix) passed as a Bearer token in the `Authorization` header.
+
+## Request
+
+**`POST https://api.mintlify.com/v1/agent/jobs/{jobId}/messages`**
+
+### Path Parameters
+
+<ParamField path="jobId" type="string" required>
+  The job ID of the active agent job you want to send a message to. Retrieve
+  this from the [Create Job](/api/agent/create-job) response.
+</ParamField>
+
+### Body Parameters
+
+<ParamField body="message" type="string" required>
+  The follow-up instruction or feedback for the agent. For example: `"The
+  authentication section is too brief — add examples for both API key and OAuth
+  2.0 flows."`
+</ParamField>
+
+## Response
+
+<ResponseField name="messageId" type="string">
+  A unique identifier for the message you just sent.
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  The current status of the agent job after receiving the message. Typically
+  transitions back to `running` while the agent processes the follow-up.
+</ResponseField>
+
+## Example
+
+<CodeGroup>
+
+```bash cURL
+curl https://api.mintlify.com/v1/agent/jobs/job_01hx9k2m3n4p5q6r7s8t9u0v/messages \
+  -X POST \
+  -H "Authorization: Bearer mint_yourAdminKeyHere" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "message": "The authentication section is too brief — add examples for both API key and OAuth 2.0 flows."
+  }'
+```
+
+```json Response
+{
+  "messageId": "msg_01hx9k2m3n4p5q6r7s8t9u0v",
+  "status": "running"
+}
+```
+
+</CodeGroup>

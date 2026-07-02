@@ -1,0 +1,366 @@
+---
+title: "Add Code Blocks and Syntax Highlighting"
+sidebarTitle: "Code"
+description: "Add inline code, fenced code blocks, syntax highlighting, line numbers, diffs, and interactive CodeGroup examples to your Mintlify docs."
+---
+
+Mintlify renders code beautifully out of the box. You can add inline code snippets for short references or full fenced code blocks for longer examples. Code blocks support syntax highlighting powered by [Shiki](https://shiki.style/), along with a rich set of meta options — titles, icons, line highlighting, diffs, expandable content, and more — all configured directly in the opening fence line.
+
+## Inline code
+
+Wrap a word or phrase in single backticks to render it as inline code:
+
+```mdx
+To denote a `word` or `phrase` as code, enclose it in backticks (`).
+```
+
+## Code blocks
+
+Use fenced code blocks by enclosing code in triple backticks. Always specify the programming language immediately after the opening fence to enable syntax highlighting. You can then add any meta options — such as a title or icon — after the language identifier.
+
+````mdx
+```java HelloWorld.java icon="java"
+class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!");
+    }
+}
+```
+````
+
+Code blocks include a copy button automatically. When the Mintlify assistant is enabled, users can also ask it to explain any code block.
+
+## Code block options
+
+Meta options let you customize how a code block looks and behaves. Place them on the opening fence line after the language identifier.
+
+- **String and boolean options** — wrap with `""`, `''`, or no quotes.
+- **Expression options** — wrap with `{}`, `""`, or `''`.
+
+You must specify a programming language before adding any other meta options.
+
+### Syntax highlighting
+
+Enable syntax highlighting by specifying the language after the opening backticks. Mintlify uses [Shiki](https://shiki.style/) and supports every language in Shiki's library. See the full [language list](https://shiki.style/languages) in Shiki's documentation.
+
+```java
+class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!");
+    }
+}
+```
+
+Customize the global code block theme in `docs.json` under `styling.codeblocks`. Set a simple preset like `system` or `dark`, or configure separate [Shiki themes](https://shiki.style/themes) for light and dark modes. See [Settings](/organize/settings-appearance#styling) for all available options.
+
+For fully custom themes, set the theme to `"css-variables"` in `docs.json` and override token colors using CSS variables prefixed with `--mint-`:
+
+<CodeGroup>
+
+```json Basic colors
+{
+  "--mint-color-text": "#e2e8f0",
+  "--mint-color-background": "#0f172a"
+}
+```
+
+```json Token colors
+{
+  "--mint-token-constant": "#f8fafc",
+  "--mint-token-string": "#86efac",
+  "--mint-token-comment": "#64748b",
+  "--mint-token-keyword": "#c084fc",
+  "--mint-token-parameter": "#fdba74",
+  "--mint-token-function": "#60a5fa",
+  "--mint-token-string-expression": "#86efac",
+  "--mint-token-punctuation": "#94a3b8",
+  "--mint-token-link": "#38bdf8"
+}
+```
+
+</CodeGroup>
+
+To add syntax highlighting for a language not included in Shiki, provide a custom TextMate grammar file and reference it in `docs.json`:
+
+```json docs.json
+{
+  "styling": {
+    "codeblocks": {
+      "languages": {
+        "custom": ["/languages/my-custom-language.json"]
+      }
+    }
+  }
+}
+```
+
+### Title
+
+Add a title to label your code example. Place it directly after the language identifier, or use the `title=` property for titles that contain special characters:
+
+To set a title inline, place it after the language identifier:
+
+````text Inline title syntax
+```javascript Example title
+const hello = "world";
+```
+````
+
+To use the `title=` property for titles with special characters:
+
+````text title= property syntax
+```javascript title="utils/hello.js"
+const hello = "world";
+```
+````
+
+### Icon
+
+Add an icon to the code block header using the `icon` property. See [Icons](/components/icons) for all available options:
+
+````mdx
+```javascript Icon example icon="square-js"
+const hello = "world";
+```
+````
+
+### Line highlighting
+
+Draw attention to specific lines using `highlight` with line numbers or ranges:
+
+````mdx
+```javascript highlight={1-2,5}
+const greeting = "Hello, World!";
+function sayHello() {
+  console.log(greeting);
+}
+sayHello();
+```
+````
+
+```javascript highlight={1-2,5}
+const greeting = "Hello, World!";
+function sayHello() {
+  console.log(greeting);
+}
+sayHello();
+```
+
+### Line focusing
+
+Dim all lines except those you want to draw focus to using `focus`:
+
+````mdx
+```javascript focus={2,4-5}
+const greeting = "Hello, World!";
+function sayHello() {
+  console.log(greeting);
+}
+sayHello();
+```
+````
+
+```javascript focus={2,4-5}
+const greeting = "Hello, World!";
+function sayHello() {
+  console.log(greeting);
+}
+sayHello();
+```
+
+### Line numbers
+
+Display line numbers on the left side of a code block using the `lines` flag:
+
+````mdx
+```javascript lines
+const greeting = "Hello, World!";
+function sayHello() {
+  console.log(greeting);
+}
+sayHello();
+```
+````
+
+### Expandable
+
+Allow users to expand and collapse long code blocks by adding the `expandable` flag. The block renders collapsed by default, showing only a preview:
+
+````mdx
+```python expandable
+from datetime import datetime, timedelta
+from typing import Dict, List, Optional
+from dataclasses import dataclass
+
+@dataclass
+class Book:
+    title: str
+    author: str
+    isbn: str
+    checked_out: bool = False
+    due_date: Optional[datetime] = None
+
+# ... rest of the implementation
+```
+````
+
+### Wrap
+
+Enable line wrapping to prevent horizontal scrolling on long lines by adding the `wrap` flag:
+
+````mdx
+```javascript wrap
+const greeting = "Hello, World! I am a long line of text that will wrap to the next line.";
+function sayHello() {
+  console.log(greeting);
+}
+sayHello();
+```
+````
+
+### Diff markers
+
+Show a visual diff of added and removed lines using inline code comments. Added lines render in green and removed lines in red. Place the marker at the end of the line using your language's comment syntax:
+
+| Language | Added | Removed |
+| --- | --- | --- |
+| JavaScript, TypeScript, Java, C, C++, Go, Rust | `// [!code ++]` | `// [!code --]` |
+| Python, Ruby, Bash, YAML | `# [!code ++]` | `# [!code --]` |
+| HTML, XML | `<!-- [!code ++] -->` | `<!-- [!code --] -->` |
+| CSS | `/* [!code ++] */` | `/* [!code --] */` |
+| SQL, Lua | `-- [!code ++]` | `-- [!code --]` |
+
+To mark multiple consecutive lines, append a colon and a count: `// [!code ++:3]` marks the current line plus the next two as added.
+
+<CodeGroup>
+
+```js JavaScript diff
+const greeting = "Hello, World!"; // [!code ++]
+function sayHello() {
+  console.log("Hello, World!"); // [!code --]
+  console.log(greeting); // [!code ++]
+}
+sayHello();
+```
+
+```python Python diff
+def greet():
+    print("Hello, World!")  # [!code --]
+    print("Hello, Mintlify!")  # [!code ++]
+
+greet()
+```
+
+</CodeGroup>
+
+### Twoslash
+
+In JavaScript and TypeScript code blocks, add the `twoslash` meta option to enable interactive type information. Users can hover over variables, functions, and parameters to see inferred types and errors, just like in an IDE:
+
+````mdx
+```ts twoslash
+type Pet = "cat" | "dog" | "hamster";
+
+function adoptPet(name: string, type: Pet) {
+  return `${name} the ${type} is now adopted!`;
+}
+
+// Hover to see the inferred types
+const message = adoptPet("Mintie", "cat");
+```
+````
+
+## CodeGroup component
+
+Use the `<CodeGroup>` component to display multiple related code blocks in a tabbed interface. This is ideal for showing the same example in different languages or for showing parallel installation commands:
+
+````mdx
+<CodeGroup>
+
+```javascript JavaScript
+const hello = "world";
+console.log(hello);
+```
+
+```python Python
+hello = "world"
+print(hello)
+```
+
+```go Go
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("world")
+}
+```
+
+</CodeGroup>
+````
+
+<CodeGroup>
+
+```javascript JavaScript
+const hello = "world";
+console.log(hello);
+```
+
+```python Python
+hello = "world"
+print(hello)
+```
+
+```go Go
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("world")
+}
+```
+
+</CodeGroup>
+
+## CodeBlock component
+
+Use the `<CodeBlock>` component inside custom React components to programmatically render code blocks with the same styling and features as Markdown fenced code blocks.
+
+### Props
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `language` | `string` | The programming language for syntax highlighting |
+| `filename` | `string` | The filename to display in the code block header |
+| `icon` | `string` | The icon to display in the header (see [Icons](/components/icons)) |
+| `lines` | `boolean` | Whether to show line numbers |
+| `wrap` | `boolean` | Whether to wrap long lines |
+| `expandable` | `boolean` | Whether to make the block expandable |
+| `highlight` | `string` | Stringified array of line numbers to highlight, e.g. `"[1,3,4,5]"` |
+| `focus` | `string` | Stringified array of line numbers to focus, e.g. `"[1,3,4,5]"` |
+
+### Example
+
+```jsx
+export const CustomCodeBlock = ({
+  filename,
+  icon,
+  language,
+  highlight,
+  children,
+}) => {
+  return (
+    <CodeBlock
+      filename={filename}
+      icon={icon}
+      language={language}
+      lines
+      highlight={highlight}
+    >
+      {children}
+    </CodeBlock>
+  );
+};
+```

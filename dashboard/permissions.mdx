@@ -1,0 +1,26 @@
+---
+title: "Deployment Permissions for Editors and Contributors"
+sidebarTitle: "Permissions"
+description: "Learn how deployment permissions differ between organization members with editor or admin roles and external contributors with repository access."
+---
+
+Not everyone who touches your documentation repository has the same deployment rights in Mintlify. The platform distinguishes between organization members who hold an editor or admin role and anyone else who can push to the underlying Git repository. Understanding this distinction helps you set up a workflow where external contributors can submit changes safely, without accidentally publishing unreviewed content to your live site.
+
+## Organization members with editor or admin access
+
+People with the [editor or admin role](/dashboard/roles) can use the web editor, trigger deployments, and manage integrations directly from your Mintlify dashboard. Their changes reach your live site automatically in two ways:
+
+- **Web editor publishes:** when an editor or admin clicks **Publish** in the Mintlify web editor, the change deploys immediately.
+- **Pull request merges:** when an editor or admin merges a pull request into your documentation repository's default branch, the change deploys automatically.
+
+No manual intervention is required for either path.
+
+<Note>
+  Automatic deployments on merge require the Mintlify GitHub App to be installed on your repository. Verify the app is installed under **Settings** → **Integrations** in your dashboard. If the app is missing, merges will not trigger deployments until it is added.
+</Note>
+
+## External contributors and repository collaborators
+
+Anyone with access to your documentation repository — such as open-source contributors, engineers on a separate team, or contractors — can push changes or open pull requests. However, their changes **do not deploy automatically**. The content stays staged until an editor or admin manually triggers a deployment from the Mintlify dashboard.
+
+This two-tier model lets you accept contributions from a wide audience while keeping full control over what actually reaches your readers. To deploy a pending change, an editor or admin navigates to the dashboard and triggers a deployment after reviewing the content.

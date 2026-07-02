@@ -1,0 +1,95 @@
+---
+title: "GET /analytics/feedback — Export Page Feedback"
+sidebarTitle: "Feedback"
+description: "GET /analytics/feedback — Export user feedback data (thumbs up/down and comments) for your documentation. Filter by page or date range."
+---
+
+Use this endpoint to export user feedback collected from your documentation pages. Feedback includes thumbs-up and thumbs-down ratings as well as optional written comments submitted by readers. Filter results by date range or a specific page slug to focus your analysis.
+
+## Authentication
+
+This endpoint requires an **Admin API key** (`mint_` prefix) passed as a Bearer token in the `Authorization` header.
+
+## Request
+
+**`GET https://api.mintlify.com/v1/analytics/feedback`**
+
+### Query Parameters
+
+<ParamField query="deploymentId" type="string" required>
+  The unique identifier for your Mintlify deployment. Feedback data will be
+  scoped to this deployment.
+</ParamField>
+
+<ParamField query="startDate" type="string">
+  The start of the date range to filter results, in ISO 8601 format. For
+  example: `2024-01-01T00:00:00Z`. Defaults to 30 days ago if omitted.
+</ParamField>
+
+<ParamField query="endDate" type="string">
+  The end of the date range to filter results, in ISO 8601 format. For example:
+  `2024-01-31T23:59:59Z`. Defaults to the current date and time if omitted.
+</ParamField>
+
+<ParamField query="page" type="string">
+  An optional page slug to limit results to feedback submitted on a specific
+  page. For example: `api/introduction`. Omit to retrieve feedback across all
+  pages.
+</ParamField>
+
+## Response
+
+<ResponseField name="feedback" type="array">
+  An array of individual feedback entries matching the specified filters.
+
+  <Expandable title="Feedback object properties">
+    <ResponseField name="pageSlug" type="string">
+      The slug of the page where the feedback was submitted. For example:
+      `api/introduction`.
+    </ResponseField>
+
+    <ResponseField name="rating" type="string">
+      The user's rating. Either `positive` (thumbs up) or `negative` (thumbs
+      down).
+    </ResponseField>
+
+    <ResponseField name="comment" type="string | null">
+      The optional written comment the user submitted alongside their rating.
+      Returns `null` if no comment was provided.
+    </ResponseField>
+
+    <ResponseField name="createdAt" type="string">
+      The ISO 8601 timestamp for when the feedback was submitted.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+## Example
+
+<CodeGroup>
+
+```bash cURL
+curl "https://api.mintlify.com/v1/analytics/feedback?deploymentId=your-deployment-id&startDate=2024-01-01T00:00:00Z&endDate=2024-01-31T23:59:59Z" \
+  -H "Authorization: Bearer mint_yourAdminKeyHere"
+```
+
+```json Response
+{
+  "feedback": [
+    {
+      "pageSlug": "api/introduction",
+      "rating": "positive",
+      "comment": "Very clear and well organized.",
+      "createdAt": "2024-01-15T10:23:44Z"
+    },
+    {
+      "pageSlug": "api/update/trigger",
+      "rating": "negative",
+      "comment": "The code example doesn't show how to handle errors.",
+      "createdAt": "2024-01-18T14:05:12Z"
+    }
+  ]
+}
+```
+
+</CodeGroup>

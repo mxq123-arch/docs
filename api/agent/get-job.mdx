@@ -1,0 +1,76 @@
+---
+title: "GET /agent/jobs/{jobId} — Get Agent Job Status"
+sidebarTitle: "Get Job"
+description: "GET /agent/jobs/{jobId} — Retrieve the status, output, and pull request URL for a previously created agent job."
+---
+
+Use this endpoint to check the progress of an agent job you started with [Create Job](/api/agent/create-job). Poll this endpoint after creating a job to determine when the agent has finished and to retrieve the URL of the pull request it opened. Once the job reaches `completed` status, the `prUrl` field contains the pull request link.
+
+## Authentication
+
+This endpoint requires an **Admin API key** (`mint_` prefix) passed as a Bearer token in the `Authorization` header.
+
+## Request
+
+**`GET https://api.mintlify.com/v1/agent/jobs/{jobId}`**
+
+### Path Parameters
+
+<ParamField path="jobId" type="string" required>
+  The job ID returned by the [Create Job](/api/agent/create-job) endpoint.
+</ParamField>
+
+## Response
+
+<ResponseField name="jobId" type="string">
+  The unique identifier for the agent job, matching the value you supplied in
+  the path.
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  The current status of the job. Possible values:
+
+  - `pending` — The job is queued and has not yet started.
+  - `running` — The agent is actively working on the documentation changes.
+  - `completed` — The agent finished and a pull request has been opened.
+  - `failed` — The job encountered an error. Check `errorMessage` for details.
+</ResponseField>
+
+<ResponseField name="prUrl" type="string | null">
+  The URL of the pull request opened by the agent. Only populated when `status`
+  is `completed`. Returns `null` for all other statuses.
+</ResponseField>
+
+<ResponseField name="errorMessage" type="string | null">
+  A human-readable description of the error. Only present when `status` is
+  `failed`.
+</ResponseField>
+
+## Example
+
+<CodeGroup>
+
+```bash cURL
+curl https://api.mintlify.com/v1/agent/jobs/job_01hx9k2m3n4p5q6r7s8t9u0v \
+  -H "Authorization: Bearer mint_yourAdminKeyHere"
+```
+
+```json Completed Response
+{
+  "jobId": "job_01hx9k2m3n4p5q6r7s8t9u0v",
+  "status": "completed",
+  "prUrl": "https://github.com/your-org/your-docs/pull/42",
+  "errorMessage": null
+}
+```
+
+```json Failed Response
+{
+  "jobId": "job_01hx9k2m3n4p5q6r7s8t9u0v",
+  "status": "failed",
+  "prUrl": null,
+  "errorMessage": "Agent could not locate the specified section in the documentation."
+}
+```
+
+</CodeGroup>

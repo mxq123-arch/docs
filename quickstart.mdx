@@ -1,47 +1,109 @@
 ---
-title: "Quickstart"
-description: "Begin with a guide on the fastest path to a successful outcome"
+title: "Get Started with Mintlify in Minutes"
+sidebarTitle: "Quickstart"
+description: "Deploy a live documentation site, preview changes locally with the CLI, connect your Git repository, and ship your first content update in minutes."
 ---
 
-Describe how someone begins using your product. What is the first thing they need to do? Are there any prerequisites?
-
-A quickstart should take someone from zero to using your product. They'll get a quick win and a sense of what they can accomplish.
+This guide walks you through deploying your first Mintlify documentation site, making a content change, and pushing it live. By the end, you'll have a working documentation site connected to a Git repository and know how to preview changes locally before deploying.
 
 ## Prerequisites
 
-Before you begin, you must have:
-
-- Requirement one (for example, Node.js 18+, a free account, an API key)
-- Requirement two (for example, a compatible device, a compatible browser, a compatible operating system)
-
-## Get started
+Before you start, make sure you have [Node.js](https://nodejs.org/en) v20.17.0 or higher installed. LTS versions are recommended for the best stability. You'll also need a GitHub or GitLab account to connect your documentation repository.
 
 <Steps>
-  <Step title="Install">
-    Describe how to install your product or sign up.
+
+  <Step title="Install the Mintlify CLI">
+    Install the `mint` CLI globally using your preferred package manager:
+
+    <CodeGroup>
+      ```bash npm
+      npm i -g mint
+      ```
+
+      ```bash pnpm
+      pnpm add -g mint
+      ```
+    </CodeGroup>
+
+    The CLI lets you preview your docs locally and run quality checks before deploying. See [Install the CLI](/cli/install) for full details and troubleshooting steps.
+  </Step>
+
+  <Step title="Create a new project">
+    Scaffold a new documentation project from the Mintlify starter template:
 
     ```bash
-    npm install your-package
+    mint new my-docs
     ```
-  </Step>
-  <Step title="Configure">
-    Describe any setup or configuration needed before first use.
+
+    The CLI walks you through an interactive setup that asks for your project name, theme, and whether you want to start from a pre-built template. You can also pass flags to skip the prompts:
+
+    | Flag | Description |
+    | --- | --- |
+    | `--name` | Project name |
+    | `--theme` | Visual theme for your site |
+    | `--template` | Clone a pre-defined template from [mintlify/templates](https://github.com/mintlify/templates) |
+    | `--force` | Overwrite the target directory without prompting |
+
+    To create a project non-interactively (for example, in a CI pipeline), pass `--name` and `--theme`, or use `--template`:
 
     ```bash
-    your-cli init
+    mint new my-docs --template starter --theme quill
     ```
   </Step>
-  <Step title="Run it">
-    Show the first thing a user does to see it working.
+
+  <Step title="Preview locally">
+    Navigate to your new project directory and start the local development server:
 
     ```bash
-    your-cli start
+    cd my-docs
+    mint dev
     ```
+
+    Your documentation site opens at `http://localhost:3000`. As you edit MDX files, changes appear in real time without restarting the server. Run `mint login` to authenticate and enable full-text search and the AI assistant in your local preview.
+
+    <Tip>
+      Use `mint dev --port 3333` if port 3000 is already in use, or pass `--no-open` to prevent the browser from opening automatically.
+    </Tip>
   </Step>
+
+  <Step title="Connect your repository">
+    Go to [mintlify.com/start](https://mintlify.com/start) to complete the onboarding process. During onboarding you'll:
+
+    1. Connect your GitHub or GitLab account
+    2. Create or select a repository to store your documentation
+    3. Install the Mintlify GitHub App to enable automatic deployments on push
+
+    After onboarding, your site is live at `https://<your-project-name>.mintlify.site`. Find the exact URL on the **Overview** page of your [dashboard](https://app.mintlify.com/).
+
+    <Note>
+      If you want to start quickly without connecting your own repository, you can skip the Git provider step during onboarding. Mintlify creates a private repository for you so you can start editing in the web editor right away. You can always migrate to your own repository later from **Git Settings** in the dashboard.
+    </Note>
+  </Step>
+
+  <Step title="Deploy your changes">
+    Commit your local edits and push them to trigger an automatic deployment:
+
+    ```bash
+    git add .
+    git commit -m "Initial documentation"
+    git push
+    ```
+
+    Mintlify detects the push via webhook and starts a new build immediately. Monitor deployment status on the **Overview** page of your dashboard. Changes are typically live within seconds.
+  </Step>
+
 </Steps>
 
-<Tip>
-  Give people a way to get help. This could be a link to a support page, a chat with a customer support agent, or a forum for your product.
+## Next steps
 
-  Example: Need help? Reach out to us at [support@yourcompany.com](mailto:support@yourcompany.com).
-</Tip>
+<CardGroup cols={3}>
+  <Card title="Web Editor" icon="pen-to-square" href="/editor/overview">
+    Edit and publish pages directly in your browser without touching Git.
+  </Card>
+  <Card title="Themes & Customization" icon="palette" href="/customize/themes">
+    Apply a theme, set brand colors, and configure navigation and custom domains.
+  </Card>
+  <Card title="AI Features" icon="sparkles" href="/ai/overview">
+    Add a conversational assistant and automate content updates with AI agents.
+  </Card>
+</CardGroup>

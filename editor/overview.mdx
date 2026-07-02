@@ -1,0 +1,57 @@
+---
+title: "Mintlify Web Editor: Collaborative Doc Editing"
+sidebarTitle: "Overview"
+description: "Create, edit, and publish docs in your browser with real-time collaboration, automatic saving, live previews, and continuous Git sync."
+---
+
+The Mintlify web editor lets you create, edit, and publish documentation entirely in your browser — no local setup, no command line, and no manual `docs.json` edits required. Every change you make saves automatically, your team can collaborate in real time, and your Git repository stays in sync as the single source of truth.
+
+## How the editor works
+
+**Changes save automatically.** As you type, the editor saves your draft to Mintlify's servers. Your work persists across browser tabs, devices, and network interruptions — so you never lose progress. Saved changes only go live when you explicitly publish them.
+
+**Git stays in sync.** When someone pushes changes to your repository from outside the editor, those changes appear automatically — no pull or page refresh needed. The editor merges non-conflicting changes and highlights anything that needs your attention.
+
+**Publishing writes to Git.** When you publish, the editor commits your changes directly to your repository. On a deployment branch, this updates your live site immediately. On a feature branch, it creates a pull request for review before anything goes live.
+
+**Your team edits together.** Multiple people can edit the same page on the same branch simultaneously. Live cursors show exactly who is editing and where, with collaborator avatars displayed in the toolbar.
+
+## The editor layout
+
+The editor interface has two primary areas:
+
+- **Top bar** — Control the active branch, access the AI agent, open a live preview, and trigger publishing. The top bar also displays collaborator avatars and connection status.
+- **Navigation sidebar** — Select any page to open it in the editor, create new pages, reorder content, and manage your overall site structure without editing configuration files directly.
+
+## Explore the editor
+
+<CardGroup cols={2}>
+  <Card
+    title="Tutorial"
+    icon="graduation-cap"
+    href="/editor/tutorial"
+  >
+    Follow a step-by-step walkthrough: create a branch, edit a page, share a preview, and publish your changes.
+  </Card>
+  <Card
+    title="Branching and Publishing"
+    icon="code-branch"
+    href="/editor/branching-and-publishing"
+  >
+    Learn how branches and protection rules determine what happens when you publish, and how to manage the full review workflow.
+  </Card>
+  <Card
+    title="Navigation"
+    icon="sidebar"
+    href="/editor/navigation"
+  >
+    Reorder pages, add groups, and manage your documentation sidebar structure using drag-and-drop.
+  </Card>
+  <Card
+    title="Editor Settings"
+    icon="gear"
+    href="/editor/settings"
+  >
+    Configure your site's branding, colors, AI instructions, and publishing defaults from the editor.
+  </Card>
+</CardGroup>

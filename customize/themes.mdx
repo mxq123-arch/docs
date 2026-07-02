@@ -1,0 +1,56 @@
+---
+title: "Choose and Configure a Mintlify Theme"
+sidebarTitle: "Themes"
+description: "Select a built-in theme to define your documentation's visual style, then fine-tune colors for light and dark mode in your docs.json."
+---
+
+Themes control the overall visual style of your documentation site — including layout, typography weight, spacing, and how colors are applied across light and dark mode. Mintlify offers several built-in themes designed for different product categories and audiences. You can pick one that matches your brand's personality and override specific colors to make it your own.
+
+## Set your theme
+
+Add the `theme` property to your `docs.json` to apply a theme:
+
+```json
+{
+  "theme": "luma"
+}
+```
+
+<Tip>
+  Run `mint new` in your terminal to launch an interactive setup that lets you preview and choose a theme before writing any config.
+</Tip>
+
+## Available themes
+
+Each theme has a distinct visual character suited to a specific type of product or audience.
+
+| Theme | Style | Best for |
+|---|---|---|
+| `willow` | Minimal, elegant | Design-focused products |
+| `luma` | Sleek, minimal | API-driven developer products |
+| `palm` | Spacious, airy | Developer-focused products |
+| `almond` | Soft, approachable | Consumer-facing products |
+| `aspen` | Bold, technical | Infrastructure and DevOps tools |
+| `maple` | Warm, sidebar-focused | Large documentation sets |
+| `sequoia` | Dense, information-rich | API-heavy products |
+
+## Configure colors
+
+You can customize the primary brand color and separately define light and dark mode variants. Add a `colors` block to your `docs.json`:
+
+```json
+{
+  "theme": "luma",
+  "colors": {
+    "primary": "#0D9373",
+    "light": "#07C983",
+    "dark": "#0D9373"
+  }
+}
+```
+
+| Property | Description |
+|---|---|
+| `primary` | The main brand color used for buttons, links, and accents |
+| `light` | Override of the primary color used in light mode |
+| `dark` | Override of the primary color used in dark mode |

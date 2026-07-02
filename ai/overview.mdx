@@ -1,0 +1,52 @@
+---
+title: "AI-Native Documentation with Mintlify"
+sidebarTitle: "AI Overview"
+description: "Mintlify builds AI-native features into every documentation site — helping users find answers, keeping content accurate, and making your docs discoverable by AI tools."
+---
+
+When you host your documentation on Mintlify, AI-native capabilities are available to your users and team without any extra configuration. Your content provides the context that powers three connected experiences: **Reading** (users get instant answers), **Writing** (your team keeps docs accurate with less effort), and **Discovering** (AI tools and search engines surface your content effectively).
+
+## What makes your documentation AI-native
+
+### Reading
+
+Users can chat with the AI assistant directly in your documentation to get immediate answers and links to relevant pages. The assistant draws exclusively from your published content, so responses stay accurate and on-topic. You can also embed the assistant into your own apps and support portals using the [assistant API](/api/assistant/create-assistant-message-v2), extending the reach of your docs to wherever your users already are.
+
+### Writing
+
+The [Mintlify agent](/agent/overview) writes and maintains your documentation by opening pull requests with proposed changes. Trigger the agent from the dashboard, a Slack thread, or the [API](/api/agent/v2/create-agent-job). Add the agent to your Slack workspace so anyone on your team can prompt it with `@mintlify` to capture knowledge, fix inaccuracies, or draft new content before it gets lost.
+
+Set up [automations](/automations/overview) to run the agent on a schedule or whenever a push event occurs in a connected repository — ideal for keeping changelogs current, translating content, and syncing documentation with code changes.
+
+You can also configure AI coding tools like [Cursor](/guides/cursor), [Claude Code](/guides/claude-code), and [Devin Desktop](/guides/devin-desktop) to reference the Mintlify schema, your style guide, and best practices so that locally generated edits stay consistent with your documentation standards.
+
+### Discovering
+
+Every Mintlify site is automatically optimized for AI crawlers and search engines. When an AI agent requests a page, your site responds with clean Markdown instead of HTML, which reduces token usage and improves comprehension. You can also view any page as Markdown by appending `.md` to its URL.
+
+Mintlify automatically hosts `llms.txt`, `llms-full.txt`, and `skill.md` files for your documentation. These industry-standard files help LLMs provide relevant answers to user queries and expose a list of capabilities that agents can invoke. Teach your users how to install your `skill.md` so they get better results when using your product alongside AI tools. Embed an installation prompt in your docs with the `<Prompt>` component:
+
+```mdx
+<Prompt description="Install the skill for your product." actions={["copy", "cursor"]}>
+npx skills add https://your-docs-domain.com
+</Prompt>
+```
+
+Your documentation site also hosts an MCP server so users can connect your docs directly to their AI tools — giving those tools up-to-date product information wherever they work. Full-text search and semantic understanding help both humans and AI agents find relevant information by intent, not just keywords. When a user hits a 404, your site automatically suggests related pages. No configuration required.
+
+<Note>
+  Every page on your Mintlify site is available as Markdown by appending `.md` to the URL. For example, `https://your-docs-domain.com/quickstart.md` returns the raw Markdown content of your quickstart page, making it easy for AI tools and developers to consume your documentation programmatically.
+</Note>
+
+## Enable AI features
+
+Select a card below to configure AI features for your documentation.
+
+<CardGroup cols={2}>
+  <Card title="Mintlify Agent" icon="robot" href="/agent/overview">
+    Set up the agent to write and maintain docs through pull requests, Slack threads, and automations.
+  </Card>
+  <Card title="Automations" icon="clock" href="/automations/overview">
+    Run the agent on a schedule or on push events to automate recurring documentation maintenance.
+  </Card>
+</CardGroup>

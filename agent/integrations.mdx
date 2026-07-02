@@ -1,0 +1,115 @@
+---
+title: "Connect Apps to the Mintlify Agent"
+sidebarTitle: "Integrations"
+description: "Connect Slack, Notion, Linear, Jira, and other apps so the agent can pull live context from your team's tools when writing and updating documentation."
+---
+
+Agent integrations give the agent access to context from the tools your team already uses. Once connected, the agent can search Slack threads, read Notion pages, look up Linear issues, and pull information from other apps to inform its responses and documentation updates. You control exactly which apps are connected and can disconnect them at any time.
+
+## Connection scope
+
+Integrations connect in one of two ways depending on how user-specific the data is:
+
+| Scope | Description | Who connects it |
+|---|---|---|
+| **Shared** | Connects once for your entire organization. Any teammate can prompt the agent to use it. | Admins or editors |
+| **Personal** | Connects per user. The agent can only use a personal integration on behalf of the user who connected it. | Each individual user |
+
+Personal integrations keep user-specific data — like calendar events — scoped to the user who authorized the connection, rather than sharing it across the organization.
+
+## Supported integrations
+
+| Integration | Scope | What the agent can access |
+|---|---|---|
+| Confluence | Shared | Pages and attachments in spaces the connected account can read |
+| Google Calendar | Personal | Events on calendars the connected user can view |
+| Google Drive | Personal | Files and folders the connected user can view, including shared drives |
+| HubSpot | Shared | CRM records (contacts, companies, deals, tickets) the connected account can read |
+| Intercom | Shared | Conversations, contacts, and help center articles the connected account can read |
+| Jira | Shared | Issues and comments in projects the connected account can read |
+| Linear | Shared | Issues, projects, and comments in teams the connected account can read |
+| Notion | Shared | Pages and databases explicitly shared with the Mintlify integration |
+| Plain | Shared | Threads and customer records accessible with the provided API key |
+| Salesforce | Shared | Standard and custom objects the connected account can read |
+| Slack | Shared | Public channels the workspace grants access to, plus private channels you add the Mintlify app to |
+
+## Connect an integration
+
+Admins and editors can connect shared integrations on behalf of the organization. Any user can connect personal integrations for their own account.
+
+<Steps>
+  <Step title="Open the integrations page">
+    Go to [Agent integrations](https://app.mintlify.com/settings/organization/integrations) in your dashboard.
+  </Step>
+  <Step title="Find and connect your integration">
+    Locate the integration you want to connect and click **Connect**.
+  </Step>
+  <Step title="Complete the OAuth flow">
+    Follow the OAuth prompts to authorize Mintlify to access your account.
+  </Step>
+  <Step title="Complete any extra configuration">
+    Some integrations have an additional configuration step. Jira, Confluence, and Salesforce ask for your workspace URL or subdomain before the OAuth flow begins. API-key providers like Plain prompt you to paste an API key.
+  </Step>
+</Steps>
+
+## How the agent uses integrations
+
+The agent uses connected integrations as tools. When you give the agent a task, it searches and retrieves content from connected apps to build context for its response. The agent only accesses integration data when it's relevant to the request — it does not proactively read from connected apps.
+
+Here are some example prompts that leverage integrations:
+
+- `Summarize the Slack thread about the v2 API migration and write it up for the knowledge base.`
+- `Check the Linear ticket for this feature and document the behavior.`
+- `What did the team decide about rate limiting? Check Slack.`
+
+## Permissions and access
+
+Each integration requests the OAuth scopes or API-key permissions it needs to search and retrieve content from the connected app. Mintlify requests read-only scopes wherever the provider offers them. Review the exact scopes on the OAuth consent screen before authorizing — it lists every permission the agent receives. You can revoke any connection at any time from the dashboard or from the connected app's own integration settings.
+
+The agent inherits the access level of the account that authorized the connection. It can only read content that the authorizing user (for personal integrations) or the connected workspace account (for shared integrations) already has permission to view in the source app.
+
+To narrow what the agent can see, restrict the connected account's permissions in the source app. For example, invite the Mintlify Slack app only to specific channels, or share only selected Notion pages with the integration.
+
+If your organization restricts which apps users can authorize, ask the relevant admin — such as your Slack or Google Workspace admin — to allow the Mintlify integration before you connect.
+
+## Troubleshoot a failed connection
+
+If an integration stops working or shows an error in the dashboard, the underlying OAuth token has usually expired, been revoked in the connected app, or had its required scopes changed.
+
+<Steps>
+  <Step title="Open the integrations page">
+    Go to [Agent integrations](https://app.mintlify.com/settings/organization/integrations) in your dashboard.
+  </Step>
+  <Step title="Find the affected integration">
+    Locate the integration showing an error and click **Configure**.
+  </Step>
+  <Step title="Disconnect and reconnect">
+    Click **Disconnect**, then click **Connect**, and complete the OAuth flow again.
+  </Step>
+  <Step title="For API-key providers">
+    If you're reconnecting Plain or another API-key provider, generate a new API key in the source app and paste it into the integration's configuration.
+  </Step>
+  <Step title="Verify source-app permissions">
+    If the agent still can't access data after reconnecting, confirm that the authorizing user has permission to view the relevant content in the source app.
+  </Step>
+</Steps>
+
+## Disconnect an integration
+
+<Steps>
+  <Step title="Open the integrations page">
+    Go to [Agent integrations](https://app.mintlify.com/settings/organization/integrations) in your dashboard.
+  </Step>
+  <Step title="Find the integration">
+    Locate the connected integration you want to remove and click **Configure**.
+  </Step>
+  <Step title="Disconnect">
+    Click **Disconnect** to remove the connection.
+  </Step>
+</Steps>
+
+<Warning>
+  Disconnecting a **shared** integration removes it for everyone in your organization immediately. The agent loses access to that tool for all teammates. Disconnecting a **personal** integration only removes your own connection — other teammates who have connected the same integration keep their access.
+</Warning>
+
+When you disconnect an integration, Mintlify does not retain a durable copy of the content from that app. The agent fetches data on each request through the live OAuth token or API key, so disconnecting cuts off all future access. Content that already appeared in past agent responses or published pull requests stays in place. If you want that content removed, edit or delete the relevant pages and conversations directly.

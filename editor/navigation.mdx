@@ -1,0 +1,65 @@
+---
+title: "Organize Your Docs Navigation in the Editor"
+sidebarTitle: "Navigation"
+description: "Reorder pages, add groups, and manage your documentation sidebar using drag-and-drop in the Mintlify editor — no docs.json edits required."
+---
+
+The navigation sidebar in the Mintlify editor gives you full control over your documentation structure. You can add, reorder, nest, and configure every element of your site's navigation visually — without ever touching `docs.json` directly. Changes you make sync to your repository automatically when you publish.
+
+## Add navigation elements
+
+Click **Add new** at the bottom of the navigation tree to add a new element at the root level. To add an element nested inside a specific group or tab, click the **+** (plus) button that appears next to that element when you hover over it.
+
+After creating an element, drag and drop it to reorder it within the tree or nest it inside another element. The editor prevents you from creating invalid combinations — for example, tabs cannot be nested inside groups.
+
+<Tip>
+  Right-click any navigation element to open a context menu with quick actions. For **pages**, you can open settings or delete the page. For other **navigation elements**, you can open settings, convert the element to a different type, duplicate it, add a page or group inside it, ungroup it, or delete it.
+</Tip>
+
+## Navigation elements
+
+Choose the structure that best fits your content. Each element type serves a distinct organizational purpose:
+
+<Accordion title="Pages">
+  Individual documentation files — the core building block of all navigation. Every page maps to a single `.mdx` file in your repository and appears as a clickable link in the sidebar.
+</Accordion>
+
+<Accordion title="Groups">
+  Collapsible sections that cluster related pages together. Groups can nest inside other groups, making them ideal for organizing large sets of related content into a clear hierarchy.
+</Accordion>
+
+<Accordion title="Tabs">
+  Top-level sections with horizontal tab navigation displayed at the top of your site. Use tabs when your documentation has distinct, high-level areas — such as **API Reference**, **Guides**, and **SDKs** — that users navigate between independently.
+</Accordion>
+
+<Accordion title="Anchors">
+  Persistent items pinned to the top of your sidebar. Anchors are useful for quick access to external resources, top-level sections, or anything your users need to reach from every page. You can configure an anchor to be global so it appears site-wide.
+</Accordion>
+
+<Accordion title="Dropdowns">
+  Expandable menus displayed at the top of your sidebar. Dropdowns are a lighter alternative to tabs when you have multiple related sections but don't need the visual weight of full tab navigation.
+</Accordion>
+
+<Accordion title="Menus">
+  Dropdown navigation items that live within a tab and link directly to specific pages. Use menus to surface important pages without requiring users to scroll through the sidebar.
+</Accordion>
+
+<Accordion title="Products">
+  A switcher for multiple distinct product documentation sets, each with its own independent navigation structure. Use products when your organization ships several separate products with entirely different content.
+</Accordion>
+
+<Accordion title="Versions">
+  A switcher for multiple simultaneous documentation versions — for example, `v1` and `v2` of your API. Versions let users select which release of your documentation they're viewing.
+</Accordion>
+
+<Accordion title="Languages">
+  A switcher for documentation written in multiple languages. Use this element when you maintain translated versions of your content and want users to toggle between them easily.
+</Accordion>
+
+## Configure elements
+
+Hover over any navigation element and click the **gear icon** to open its settings panel. You can configure the following properties:
+
+- **Title** — The label displayed in the sidebar or navigation bar.
+- **Icon** — A visual marker rendered next to the label to help users identify the section at a glance.
+- **Tag** — A badge such as `NEW` or `BETA` that draws attention to recently added or updated sections.

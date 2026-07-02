@@ -1,0 +1,98 @@
+---
+title: "POST /assistant/messages — Chat with the Assistant"
+sidebarTitle: "Create Message"
+description: "POST /assistant/messages — Send a user question to the documentation AI assistant. Returns an answer with source citations and page links."
+---
+
+Use this endpoint to send a user's question to the Mintlify AI assistant, which is trained on your documentation. The assistant returns a natural-language answer along with citations linking back to the source pages it used to generate the response. Pass the `conversationId` from a previous response to maintain conversation context across follow-up questions.
+
+## Authentication
+
+This endpoint requires an **Assistant API key** (`mint_dsc_` prefix) passed as a Bearer token in the `Authorization` header.
+
+<Warning>
+  Never embed the assistant API key directly in client-side code. Any visitor
+  who extracts the key from your frontend can send requests on your behalf,
+  consuming your assistant credits and potentially triggering overage charges.
+  Always proxy assistant API requests through your own backend server and store
+  the key as a server-side environment variable. A backend proxy also lets you
+  enforce rate limiting, require authentication, and add bot protection to
+  prevent abuse.
+</Warning>
+
+## Request
+
+**`POST https://api.mintlify.com/v1/assistant/messages`**
+
+### Body Parameters
+
+<ParamField body="query" type="string" required>
+  The user's question or message to send to the assistant. For example: `"How
+  do I authenticate with the API?"`
+</ParamField>
+
+<ParamField body="deploymentId" type="string" required>
+  The unique identifier for your Mintlify deployment. The assistant will answer
+  questions using the documentation from this deployment.
+</ParamField>
+
+<ParamField body="conversationId" type="string">
+  An optional conversation ID from a previous response. Supply this to continue
+  an existing conversation so the assistant has context from earlier messages.
+  Omit this field to start a new conversation.
+</ParamField>
+
+## Response
+
+<ResponseField name="answer" type="string">
+  The assistant's natural-language answer to the user's question.
+</ResponseField>
+
+<ResponseField name="sources" type="array">
+  An array of source pages the assistant cited when generating the answer.
+
+  <Expandable title="Source object properties">
+    <ResponseField name="url" type="string">
+      The full URL of the source documentation page.
+    </ResponseField>
+
+    <ResponseField name="title" type="string">
+      The title of the source documentation page.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="conversationId" type="string">
+  A unique identifier for this conversation. Pass this value back in subsequent
+  requests to continue the conversation with preserved context.
+</ResponseField>
+
+## Example
+
+<CodeGroup>
+
+```bash cURL
+curl https://api.mintlify.com/v1/assistant/messages \
+  -X POST \
+  -H "Authorization: Bearer mint_dsc_yourAssistantKeyHere" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "How do I authenticate with the API?",
+    "deploymentId": "your-deployment-id"
+  }'
+```
+
+```json Response
+{
+  "answer": "To authenticate with the Mintlify API, include your API key as a Bearer token in the Authorization header of every request. Admin API keys begin with `mint_` and are used for update, agent, and analytics endpoints. Assistant API keys begin with `mint_dsc_` and are used for the assistant endpoints.",
+  "sources": [
+    {
+      "url": "https://mintlify.com/docs/api/introduction",
+      "title": "Mintlify REST API Reference"
+    }
+  ],
+  "conversationId": "conv_01hx9k2m3n4p5q6r7s8t9u0v"
+}
+```
+
+</CodeGroup>

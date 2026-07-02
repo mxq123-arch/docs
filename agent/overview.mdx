@@ -1,0 +1,83 @@
+---
+title: "What Is the Mintlify Agent?"
+sidebarTitle: "Overview"
+description: "The Mintlify agent researches, plans, writes, and validates documentation changes, then opens pull requests for your team to review — never committing directly to main."
+---
+
+The Mintlify agent is an AI tool that creates pull requests with proposed changes to your documentation based on your prompts. You can interact with it from the dashboard, your Slack workspace, or the API. Rather than replacing your review process, the agent works within it — every suggested change goes through a pull request so your team stays in control.
+
+## What the agent does
+
+When you send the agent a request, it works through a structured process before opening a PR:
+
+- **Researches**: Searches and reads your existing documentation, any connected repositories, relevant context, and the web.
+- **Plans**: Creates a structured task list for complex documentation work.
+- **Writes**: Generates or updates content following writing standards and best practices.
+- **Validates**: Runs Mintlify CLI checks to ensure the documentation builds correctly.
+- **Creates a PR**: Opens a pull request with proposed changes for your team to review.
+
+<Note>
+  All changes go through pull requests. The agent never commits directly to your main branch.
+</Note>
+
+## What you can do with the agent
+
+<CardGroup cols={2}>
+  <Card title="Write new content" icon="pen-to-square">
+    Draft pages based on prompts, pull requests, Slack threads, or file attachments.
+  </Card>
+  <Card title="Update for new features" icon="arrow-up-right-dots">
+    Revise existing documentation when APIs change or features ship.
+  </Card>
+  <Card title="Handle images and files" icon="image">
+    Process and include images, diagrams, and other files from Slack attachments.
+  </Card>
+  <Card title="Revise code examples" icon="code">
+    Search and update code examples and API references across your docs.
+  </Card>
+  <Card title="Pull live context" icon="plug">
+    Reference source code from connected repos and pull context from Slack, Notion, Linear, and Jira.
+  </Card>
+  <Card title="Automate maintenance" icon="clock">
+    Run recurring tasks like changelog generation or style checks with automations.
+  </Card>
+  <Card title="Answer questions" icon="circle-question">
+    Ask the agent questions about your docs and technical writing topics.
+  </Card>
+  <Card title="Address review feedback" icon="comment-dots">
+    Share a PR link so the agent can resolve reviewer comments and maintain quality.
+  </Card>
+</CardGroup>
+
+You can also use the agent to capture knowledge from Slack conversations and pull requests before it gets lost, and to coordinate changes across multiple files and directories in a single run.
+
+## Connect your GitHub account
+
+By default, the agent opens pull requests attributed to the Mintlify bot. To attribute pull requests to your own GitHub account instead, connect your GitHub account on the [My profile](https://app.mintlify.com/settings/account) page of the dashboard.
+
+## Connect repositories as context
+
+The agent can only access repositories that you connect through the Mintlify GitHub App. This gives you precise control over what source code and content the agent can read when researching and writing. Configure which repositories the agent can access in the agent panel **Settings** or directly in the [GitHub App settings](https://github.com/apps/mintlify/installations/new).
+
+## Use AI tools alongside the agent
+
+The agent works asynchronously through pull requests, but you can also use AI coding tools like Cursor or Claude Code locally for fast, iterative edits. Install the Mintlify [skill](/ai/skillmd) and connect the [MCP server](/ai/model-context-protocol) so your local editor has the same context the agent uses — keeping all your documentation work consistent.
+
+To let an external agent edit your content directly through MCP tool calls, connect it to the [Mintlify MCP server](/ai/mintlify-mcp).
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Integrations" icon="puzzle-piece" href="/agent/integrations">
+    Give the agent access to Slack, Notion, Linear, Jira, and more.
+  </Card>
+  <Card title="Use Cases" icon="lightbulb" href="/agent/use-cases">
+    Explore real-world examples and workflow patterns.
+  </Card>
+  <Card title="Customize" icon="sliders" href="/agent/customize">
+    Configure the agent's behavior with an AGENTS.md file.
+  </Card>
+  <Card title="Automations" icon="clock" href="/automations/overview">
+    Automate recurring documentation tasks on a schedule or trigger.
+  </Card>
+</CardGroup>
